@@ -1,0 +1,89 @@
+<ion-header>
+  <ion-toolbar style="--min-height:0px !important">
+     <ion-item lines="full">
+      <ion-icon name="arrow-back-outline" (click)="back()"></ion-icon>
+    <ion-title>My Profile</ion-title>
+  </ion-item>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content *ngFor="let val of personaldetail" class="profile_page">
+  <section class="profile">
+    <div class="profile_img">
+      <!-- <img src="../../../../assets/images/user.jpg" /> -->
+      <img [src]="profileimage" onError="this.src='../../../assets/images/customer.png'"/>
+    </div>
+    <div class="profile_desc">
+      <h4>{{val.CustomerName}}</h4>
+      <p>{{val.MobileNo}}</p>
+      <p>{{val?.Email}}</p>
+    </div>
+  </section>
+
+  <ion-card class="card_bg">
+    <!-- <ion-card-header>
+      <ion-card-title>
+        <h3>
+          Private Details <span>(read only)</span>
+        </h3>
+      </ion-card-title>
+    </ion-card-header> -->
+    <ion-card-content fullscreen>
+      <ion-list>
+
+         <ion-item lines="full" class="persondet" *ngIf="val?.email">
+          <ion-label class="as-width-50">Email</ion-label>
+          <ion-note class="as-width-50 as-p-1" >{{val?.Email}}</ion-note>
+        </ion-item>
+
+         <ion-item lines="full" class="persondet"  >
+           
+          <ion-label class="as-width-50">Mobile Number</ion-label>
+          <ion-note class="as-width-50 as-p-1" >{{val.MobileNo}}</ion-note>
+        </ion-item>
+
+         <!-- <ion-item lines="full" class="persondet">
+          <ion-label class="as-width-50">Gender</ion-label>
+          <ion-note class="as-width-50 as-p-1" >{{val.Gender}}</ion-note>
+        </ion-item> -->
+        <ion-item lines="full" class="persondet" *ngIf="val?.DOB">
+          <ion-label class="as-width-50">Dob</ion-label>
+          <ion-note class="as-width-50 as-p-1" >{{val.DOB}}</ion-note>
+        </ion-item>
+
+        <ion-item *ngIf="personage>0" lines="full">
+          <ion-label class="persondet as-width-50">Age</ion-label>
+          <!-- <ion-note slot="end" style="text-align: left;" *ngIf="personage==0">------</ion-note> -->
+          <ion-note slot="end"class="as-width-50 as-p-1" *ngIf="personage>0">{{this.personage}} Years </ion-note>
+         </ion-item>
+       <ion-item lines="full" class="address_sec"> 
+          <ion-label class="as-width-50">Address</ion-label>
+          <ion-note class="as-width-50 as-p-1" >{{val.AddressForCommunication}}</ion-note>
+        </ion-item>
+
+       </ion-list>
+    </ion-card-content>
+  </ion-card>
+  <section class="p-24">
+    <ion-button expand="block" class="btn" (click)="reset()">RESET YOUR PASSWORD</ion-button>
+  </section>
+</ion-content>
+
+<ion-tab-bar slot="bottom">
+ 
+  <ion-tab-button [routerLink]="['/subscribe-list/person-detail']">
+    <ion-icon color="primary" name="person"></ion-icon>
+    <ion-label color="primary">Profile</ion-label>
+  </ion-tab-button>
+
+  <ion-tab-button [routerLink]="['/subscribe-list']">
+    <ion-icon name="home"></ion-icon>
+    <ion-label>Home</ion-label>
+  </ion-tab-button>
+
+  <ion-tab-button [routerLink]="['/subscribe-list/subscriber-recepit']">
+    <ion-icon name="reader-outline"></ion-icon>
+    <ion-label>Receipt</ion-label>
+  </ion-tab-button>
+
+</ion-tab-bar>

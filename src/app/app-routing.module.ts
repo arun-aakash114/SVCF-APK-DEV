@@ -1,17 +1,66 @@
 import { NgModule } from '@angular/core';
 import { PreloadAllModules, RouterModule, Routes } from '@angular/router';
-
+import { AuthGuard } from './Login/Auth/auth.guard';
 const routes: Routes = [
   {
-    path: 'home',
-    loadChildren: () => import('./home/home.module').then( m => m.HomePageModule)
+    path: '',
+    redirectTo: 'login',
+    pathMatch: 'full',
+    loadChildren: () => import('./Login/login/login.module').then( m => m.LoginPageModule)
   },
   {
-    path: '',
-    redirectTo: 'home',
-    pathMatch: 'full'
+    path: 'customer-list',
+    loadChildren: () => import('./employee/customer-list/customer-list.module').then( m => m.CustomerListPageModule)
   },
-];
+  {
+    path: 'subscribe-list',
+    loadChildren: () => import('./subscribers/subscribe-list/subscribe-list.module').then( m => m.SubscribeListPageModule)
+  },
+  //canActivate: [AuthGuard]
+  {
+    path: 'forgot-password',
+    loadChildren: () => import('./Login/forgot-password/forgot-password.module').then( m => m.ForgotPasswordPageModule)
+  },
+  {
+    path: 'reset-password',
+    loadChildren: () => import('./Login/forgot-password/reset-password/reset-password.module').then( m => m.ResetPasswordPageModule)
+  },
+  {
+    path: 'reset',
+    loadChildren: () => import('./reset/reset.module').then( m => m.ResetPageModule)
+  },
+ 
+
+  //employee
+  
+  { path: 'dashboard', loadChildren:()=> import('./pages/dashboard/dashboard.module').then(m=> m.DashboardPageModule)},
+  
+  { path: 'otherbranch', loadChildren:()=> import('./pages/otherbranches/otherbranches.module').then(m=> m.OtherbranchesPageModule)},
+  { path: 'branchmembers', loadChildren:()=> import('./pages/branchmembers/branchmembers.module').then(m=> m.BranchmembersPageModule)},
+
+  { path: 'payment', loadChildren:()=> import('./pages/payment/payment.module').then(m=> m.PaymentPageModule)},
+  { path: 'cashprint', loadChildren:()=> import('./pages/cashprint/cashprint.module').then(m=> m.CashprintPageModule)},
+  {
+    path: 'receipthistory',
+    loadChildren: () => import('./pages/receipthistory/receipthistory.module').then( m => m.ReceipthistoryPageModule)
+  },
+  {
+    path: 'selectapp',
+    loadChildren: () => import('./selectapp/selectapp.module').then( m => m.SelectappPageModule)
+  },
+  {
+    path: 'termscondition',
+    loadChildren: () => import('./Login/termscondition/termscondition.module').then( m => m.TermsconditionPageModule)
+  },
+  {
+    path: 'branchmembers',
+    loadChildren: () => import('./pages/branchmembers/branchmembers.module').then( m => m.BranchmembersPageModule)
+  },
+
+
+
+
+]; 
 
 @NgModule({
   imports: [

@@ -1,0 +1,185 @@
+<ion-header>
+  <ion-toolbar style="--min-height:0px !important">
+   <ion-item>
+    <ion-icon name="arrow-back-outline" (click)="back()"></ion-icon>
+    <ion-title>Receipt Details</ion-title>
+   </ion-item>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content fullscreen class="ion-padding svcf_recepit_page">
+  <section class="payment">
+    <div class="page_title">
+      <h3>My Receipts</h3>
+    </div>
+
+  <form [formGroup]="dateform" (ngSubmit)="datefilter(dateform.value)">
+  
+    
+          <ion-item>
+            <ion-label>Start Date</ion-label>
+            <ion-datetime display-format="DD-MM-YYYY"  min="1994-03-14" formControlName="startdate"></ion-datetime><ion-icon name="calendar-outline" style="color: #30ADFF;"  slot="end"></ion-icon>
+          </ion-item>
+         
+          <ion-item>
+            <ion-label>End Date</ion-label> 
+            <ion-datetime display-format="DD-MM-YYYY" min="1994-03-14" formControlName="enddate" ></ion-datetime><ion-icon name="calendar-outline" style="color: #30ADFF;" slot="end"></ion-icon>
+          </ion-item>
+          <!-- <ion-col ></ion-col> -->
+         
+        <!-- </ion-row> -->
+        
+
+    
+      
+      <section class="as-text-center">
+        <ion-button [disabled]="!dateform.valid" class="btn as-btn" type="submit">Submit</ion-button>
+      </section>
+  </form>
+  </section>
+  <p *ngIf="this.arrears.length !==0" class="grand_total">Grand Total:<span>Rs.{{indianRupeeFormat(this.grandtotal)}}</span>
+  </p>
+  <div scrollX="true" scrollY="true" id="scroll-list">
+  <div *ngFor="let data of receiptdata;let i=index">
+    <ion-card class="card_bg">
+      <ion-card-content>
+          <div class="ofz_img">
+            <img src="../../../assets/images/img.png">
+            <div class="branch_name">
+              <p>Branch Name:<span>{{data.branchName}}</span></p>
+              <p>Form No: <span>VF1</span></p>
+            </div>
+          </div>
+
+          <div class="logo">
+            <img src="../../../assets/images/logo.png">
+          </div>
+
+          <div class="ofz_address">
+            <h1>SREE VISALAM CHIT FUND LTD.</h1>
+            <p>Register Office: Tirunelveli - 3</p>
+            <p>(See Section 23 and Rule 25) </p>
+            <p>Receipt issued under the chit funds Act 1982</p>
+          </div>
+
+          <!-- <section class="ofz_time">
+            <p>
+              21.11.2020 / 04.00 PM
+            </p>
+          </section> -->
+          <div class="receipt_content">
+            <h3>
+              CD/REC.SERIES
+            </h3>
+            <div class="receipt_no">
+              <p>AGT No: <span>#{{data.AgreementNo}}</span></p>
+              <p>Online Payment Receipt No: <span>{{data.appReceiptno}}</span></p>
+            </div>
+            <table class="table receipt_amts">
+              <tbody>
+                <tr>
+                  <th>ChitNo</th>
+                  <td>:</td>
+                  <td>{{data.chitNo}}</td>
+                </tr>
+                <tr>
+                <tr>
+                  <th>Received From</th>
+                  <td>:</td>
+                  <td>{{data.customerName}}</td>
+                </tr>
+                <!-- <tr>
+                  <th>Current Due</th>
+                  <td>:</td>
+                  <td>Rs.{{data.currentDue}}</td>
+                </tr> -->
+                <tr>
+                  <th>Installment No</th>
+                  <td>:</td>
+                  <td>{{data.CurrentInstNo}}</td>
+                </tr>
+
+                <!-- <tr>
+                  <th>Arrears</th>
+                  <td>:</td>
+                  <td>Rs. {{this.arrears1[i]}}</td>
+                </tr> -->
+                <tr>
+                  <tr>
+                    <th>Interest</th>
+                    <td>:</td>
+                    <td>Rs. {{indianRupeeFormat(data.interest)}}</td>
+                  </tr>
+                  
+                  <!-- <tr>
+                  <th>Penalty For Over Due</th>
+                  <td>:</td>
+                  <td>Rs. 00.00</td>
+                </tr> -->
+                <!-- <tr>
+                  <th>Other Receipts</th>
+                  <td>:</td>
+                  <td>Rs. 00.00</td>
+                </tr> -->
+                <tr>
+                  <th>Paid Date</th>
+                  <td>:</td>
+                  <td>{{data.paidDate|date:'dd-MM-yyyy '}}</td>
+                </tr>
+                <tr>
+                  <th>Paid Time</th>
+                  <td>:</td>
+                  <td>{{data.paidDate|date:'HH:mm a'}}</td>
+                </tr>
+                <tr>
+                  <tr *ngIf="data.isAccepted=='1'"> 
+                    <th>Status</th>
+                    <td>:</td>
+                    <td *ngIf="data.isAccepted=='1'" style="color:green">Accepted</td>
+                  </tr>
+                  <tr *ngIf="data.isAccepted=='2'"> 
+                    <th>Status</th>
+                    <td>:</td>
+                    <td *ngIf="data.isAccepted=='2'"  style="color:red">Cancelled</td>
+                  </tr>
+                <!-- <tr>
+                  <th>Other Receipts</th>
+                  <td>:</td>
+                  <td>Rs.{{data.otherReceipts===''?'0.00':data.otherReceipts}}</td>
+                </tr> -->
+              </tbody>
+            </table>
+            <p  class="grand_total">Total:<span>Rs.{{indianRupeeFormat(data.Total)}}</span>
+            </p>
+          </div>
+      </ion-card-content>
+    </ion-card>
+  </div>
+</div>
+  <div *ngIf="this.show1==true">
+    <div style="height: 250px;text-align: center;margin-top: 50%;" *ngIf="this.receiptdata.length===0">No Data</div>
+  </div>
+  
+  <!-- <p *ngIf="this.arrears.length !==0" class="grand_total">Grand Total:<span>Rs.{{this.grandtotal}}</span>
+  </p> -->
+</ion-content>
+
+<ion-tab-bar slot="bottom">
+  <ion-tab-button [routerLink]="['/subscribe-list/person-detail']">
+    <ion-icon name="person"></ion-icon>
+    <ion-label>Profile</ion-label>
+  </ion-tab-button>
+  <ion-tab-button [routerLink]="['/subscribe-list']">
+    <ion-icon name="home"></ion-icon>
+    <ion-label>Home</ion-label>
+  </ion-tab-button>
+  <ion-tab-button [routerLink]="['/subscribe-list/subscriber-recepit']">
+    <ion-icon color="primary"  name="reader-outline"></ion-icon>
+    <ion-label color="primary">Receipt</ion-label>
+  </ion-tab-button>
+</ion-tab-bar>
+
+
+<!-- <ion-button (click) = "shareViaEmail(img.url)"> Email</ion-button>
+ <ion-button (click) = "shareViaapp(img.url)"> whatsapp</ion-button>
+ <ion-button (click) = "shareViaSMS(img.url)">SMS</ion-button> -->

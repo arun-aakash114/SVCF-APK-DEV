@@ -1,0 +1,165 @@
+<!-- <ion-header>
+  <ion-toolbar>
+    <ion-title>subscribe-list</ion-title>
+  </ion-toolbar>
+</ion-header> -->
+
+
+
+<ion-content class="svcf_dashboard_page">
+
+  <section class="customer_details">
+    <ion-row size="12">
+      <ion-col class="customer_name" size="8">
+        <h2 size="8">{{customername}}</h2>
+        <h5 size="8">ID:{{customerid}}</h5>
+      </ion-col>
+      <ion-col class="profile_img" size="3">
+        <!-- <ion-avatar><span>{{this.Logo}}</span></ion-avatar> -->
+        <ion-avatar><span>
+          <img [src]="profileimage" onError="this.src='../../../assets/images/customer.png'" (click)="profile()"/>
+            <!-- <img src="" > -->
+          </span></ion-avatar>
+
+        <!-- <ion-avatar><img src="https://www.lifewire.com/thmb/1na-tdifkQUT1obPOp7r0AwP2Bc=/1373x0/filters:no_upscale():max_bytes(150000):strip_icc():format(webp)/ScreenShot2020-04-20at10.06.28AM-69855f4797cb4be4bbed72f51dff1ab5.jpg"></ion-avatar> -->
+      </ion-col>
+      <ion-col class="menu" size="1">
+        <ion-icon name="exit" (click)="logout()"></ion-icon>
+      </ion-col>
+    </ion-row>
+    <!-- <ion-searchbar></ion-searchbar> -->
+
+    <div class="search">
+      <ion-searchbar placeholder="search" [(ngModel)]="term"></ion-searchbar>
+      <!-- <input type="text" class="form-control" placeholder="search" [(ngModel)]="term"> -->
+    </div>
+<ion-row size="12">
+  <ion-col> <p *ngIf="chit_length !=0" class="total_chits">No. of Chits : <span>{{chit_length}}</span></p></ion-col>
+  <ion-col class="menu" size="3" (click)="allchits()">
+    <ion-row style="margin-left: 18px;"> <ion-icon name="layers-outline" ></ion-icon></ion-row>
+    <ion-row>  <ion-label class="menu1">Chit History</ion-label></ion-row>
+   </ion-col>
+</ion-row>
+   
+   
+    
+  </section>
+  <div *ngFor="let val of userlist3 | filter:term; let i=index">
+  <ion-card class="card_bg" >
+    <!-- *ngIf="status(i,val.status)||val.status===checkbox -->
+    <div class="chits_item_details" (click)="blockchits(val)">
+      <!-- [disabled]="val.Interest=='0' && val.CurrentDueAmount =='0.00' && val.NonPrizedArrier =='0.00' && val.PrizedArrier =='0.00'" -->
+      <ion-checkbox [disabled]="val.IsBlocked==1"(ionChange)="passParams($event,val)"></ion-checkbox>
+      <table class="table chit_details">
+        <tbody>
+          <tr>
+            <td>
+              <span class="branch_name">{{val.BranchName}}</span>
+            </td>
+          </tr>
+
+          <tr>
+            <th>Chit No</th>
+            <td>
+              <p>:</p>
+            </td>
+            <td>
+              <span>{{val.ChitNo}}</span>
+            </td>
+          </tr>
+
+          <tr>
+            <th>Current Inst No</th>
+            <td>
+              <p>:</p>
+            </td>
+            <td>
+              <span>{{val.Runningcall}}</span>
+            </td>
+          </tr>
+          <tr>
+            <th>current Due</th>
+            <td>
+              <p>:</p>
+            </td>
+            <td>
+              <span> ₹ {{indianRupeeFormat(val.CurrentDueAmount)}}</span>
+            </td>
+          </tr>
+
+
+          <tr>
+            <th>Arrear Amount</th>
+            <td>
+              <p>:</p>
+            </td>
+            <td>
+              <!-- <span>{{val.IsPrized === 'Y'?val.PrizedArrier:val.NonPrizedArrier}}</span> -->
+              <span *ngIf="val.IsPrized === 'Y'"> ₹ {{indianRupeeFormat(val.PrizedArrier)}}</span>
+              <span *ngIf="val.IsPrized === 'N'"> ₹ {{indianRupeeFormat(val.NonPrizedArrier)}}</span>
+            </td>
+          </tr>
+
+
+          <tr>
+            <th>Interest Amount</th>
+            <td>
+              <p>:</p>
+            </td>
+            <td>
+              <span>₹ {{indianRupeeFormat(val.Interest)}}</span>
+            </td>
+          </tr>
+          <tr *ngIf="val.IsBlocked==1">
+            <th></th>
+            <td>
+              <p></p>
+            </td>
+            <td>
+              <span style="color:#F00A0A;">Blocked</span>
+            </td>
+          </tr>
+          <!-- <td> <p size="6" *ngIf="val.IsBlocked==0" style="color:#F00A0A;">Blocked</p> </td> -->
+        </tbody>
+      </table>
+    </div>
+
+    <div class="chit_status"  [ngClass]="val.IsPrized === 'Y'?'green':'red'">
+      <p>{{val.IsPrized === 'Y'?'Prized':'Non-Prized'}}</p>
+    </div>
+    <div class="bottom_sec">
+      <p size="6"></p>
+      <p size="6">Total paid : <span>₹ {{indianRupeeFormat(val.TotalPaid)}}</span></p>
+    </div>
+  </ion-card>
+  <hr class="as-hr-s" >
+ </div>
+  <div style="height: 250px;text-align: center;margin-top: 50%;" *ngIf="(userlist3 | filter: term).length === 0">No matching Datas</div>
+  
+</ion-content>
+<section class="p-24 as-btn-fix">
+  <ion-button expand="block" *ngIf="(userlist3 | filter: term).length !== 0" (click)="processdata()" class="btn">Continue</ion-button>
+</section>
+
+<ion-tab-bar slot="bottom" class="tab-selected">
+
+  <ion-tab-button [routerLink]="['/subscribe-list/person-detail']">
+    <ion-icon name="person"></ion-icon>
+    <ion-label>Profile</ion-label>
+  </ion-tab-button>
+
+  <ion-tab-button [routerLink]="['/subscribe-list']">
+    <ion-icon color="primary" name="home"></ion-icon>
+    <ion-label color="primary">Home</ion-label>
+  </ion-tab-button>
+ 
+
+  <ion-tab-button [routerLink]="['/subscribe-list/subscriber-recepit']">
+    <ion-icon name="reader-outline"></ion-icon>
+    <ion-label>Receipt</ion-label>
+  </ion-tab-button>
+  <ion-tab-button [routerLink]="['/subscribe-list/payforothers']">
+    <ion-icon name="people-outline"></ion-icon>
+    <ion-label>Pay others</ion-label>
+  </ion-tab-button>
+</ion-tab-bar>

@@ -1,7 +1,7 @@
 {
-  "name": "EmployeeMobile",
+  "name": "svcf",
   "integrations": {
-    "capacitor": {}
+    "cordova": {}
   },
   "type": "angular"
 }
