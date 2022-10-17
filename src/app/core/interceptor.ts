@@ -11,27 +11,6 @@ export class Interceptor implements HttpInterceptor {
     intercept(request: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
          let app=localStorage.getItem("app")
          console.log(this.router.url)
- if(app=="customer"){
-    if (!/^(http|https):/i.test(request.url)) {
-        console.log(request.url)
-                  if (request.url.includes('login')) {
-                      console.log(request.url)
-                      request = request.clone({ url: "https://api.sreevisalam.com/SVCF_WCF/api/SVCFAPI/" + request.url });
-                  }
-                  else {
-                      const headers: HttpHeaders = new HttpHeaders({
-                          'Content-Type': 'application/json',
-                          Authorization: `Bearer ${localStorage.getItem("token")}`,
-                          // Accept: localStorage.getItem('schema')
-                      });
-                      request = request.clone({ url: "https://api.sreevisalam.com/SVCF_WCF/api/SVCFAPI/" + request.url, headers });
-                  }
-       
-            
-              }
-            return next.handle(request);
-}
-else{
     if (!/^(http|https):/i.test(request.url)) {
         console.log(request.url)
                   if (request.url.includes('login')) {
@@ -50,7 +29,7 @@ else{
             
               }
             return next.handle(request);
-}
+
        
           }
     }

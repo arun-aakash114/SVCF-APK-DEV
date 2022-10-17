@@ -48,46 +48,13 @@ export class LoginPage implements OnInit {
   ionViewWillEnter(){
     this.count=0;
     this.loginForm.reset("");
-   if(localStorage.getItem("app")=="employee"){
+   
         this.Forgots=false
-      }
+      
   }
   
 
    submitForm(val){   
-     if(localStorage.getItem("app")=="customer"){
- this.commonserv.loginCredentials(val.name,val.password).subscribe(res=>{
-          console.log(res)
-          console.log(val)
-          this.member_id = res['MemberIDNew']
-          this.token=res["JWToken"]
-          console.log(this.token)
-          console.log(this.member_id)
-          localStorage.setItem('memberid',this.member_id) 
-          localStorage.setItem('token',this.token) 
-          if(res['IsLogged']=="1"){
-            this.presentToast('Your Account is already logged in with another device')
-          }else if(res['IsLogged']=="0"){
-            if(res['Message'] === "Login Details Correct" && val['name'] === val['password']){
-              localStorage.setItem("firstdata",JSON.stringify(val));
-              localStorage.setItem("whichpage","login")
-              this.router.navigate(['/reset'])
-              this.presentToast("Please Reset Your Password");
-            }else if (res['Message'] === "Login Details Correct" && val['name'] != val['password']){
-              this.router.navigate(['/subscribe-list'])
-              this.presentToast("Logged in Successfully");
-            }else{
-              // alert("Please Enter Valid credentials")
-              this.presentToast("Please Enter Valid credentials");
-              this.loginForm.reset("")
-            }
-          }
-          
-        }, error => {
-          this.dismiss();
-          this.presentToast("Server Error! Please try later.");
-          })
-     } else{
       this.present();
       this.credentials = val;
       this.username = this.credentials['name'];
@@ -140,7 +107,7 @@ export class LoginPage implements OnInit {
       //alert('Something went wrong')
       })
       }
-     }    
+        
        
    
    

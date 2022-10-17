@@ -9,7 +9,6 @@ import { Location } from '@angular/common';
 import { Router } from '@angular/router';
 import { Subscription } from 'rxjs';
 import { LocalNotifications } from '@ionic-native/local-notifications/ngx';
-import { SubscriberApiService } from './subscribers/subscriber-api.service';
 import { CommonApiService } from './Login/common-api.service';
 @Component({
   selector: 'app-root',
@@ -32,7 +31,6 @@ export class AppComponent {
     public location:Location,
     private router:Router,
     private service:DashboardService,
-    public subservice:SubscriberApiService,
     private localNotifications: LocalNotifications,
     public common:CommonApiService
   ) {
@@ -44,7 +42,7 @@ this.service.tokenexpiry(localStorage.getItem("tokens")).subscribe(res=>{
  if(time>300){
   this.router.navigate(['/dashboard'])
  }else {
-   this.router.navigate(['/selectapp'])
+   this.router.navigate(['/login'])
    this.offapp()
  }
 })
@@ -162,14 +160,6 @@ offapp(){
         }
         else if(window.location.pathname=="/forgot-password" || window.location.pathname=="/reset-password" || window.location.pathname=="/termscondition"){
           this.router.navigate(['/login'])
-        }
-        else if( window.location.pathname=="/reset"){
-          if(localStorage.getItem("whichpage")=="login"){
-            this.router.navigate(['/selectapp'])
-            localStorage.clear()
-          }else{
-            this.router.navigate(['/subscribe-list/person-detail'])
-          }
         }
         else if(window.location.pathname=="/login"){
           this.router.navigate(['/selectapp'])

@@ -6,15 +6,14 @@ const routes: Routes = [
     path: '',
     redirectTo: 'login',
     pathMatch: 'full',
-    loadChildren: () => import('./Login/login/login.module').then( m => m.LoginPageModule)
+  },
+  {
+    path: 'login',
+  loadChildren: () => import('./Login/login/login.module').then( m => m.LoginPageModule)
   },
   {
     path: 'customer-list',
     loadChildren: () => import('./employee/customer-list/customer-list.module').then( m => m.CustomerListPageModule)
-  },
-  {
-    path: 'subscribe-list',
-    loadChildren: () => import('./subscribers/subscribe-list/subscribe-list.module').then( m => m.SubscribeListPageModule)
   },
   //canActivate: [AuthGuard]
   {
@@ -43,10 +42,6 @@ const routes: Routes = [
   {
     path: 'receipthistory',
     loadChildren: () => import('./pages/receipthistory/receipthistory.module').then( m => m.ReceipthistoryPageModule)
-  },
-  {
-    path: 'selectapp',
-    loadChildren: () => import('./selectapp/selectapp.module').then( m => m.SelectappPageModule)
   },
   {
     path: 'termscondition',

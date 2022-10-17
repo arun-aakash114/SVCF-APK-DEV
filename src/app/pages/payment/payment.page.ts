@@ -278,7 +278,7 @@ this.presentToast("Chit Number is blocked, Please Contact admin")
         this.dashboardservice.logout(localStorage.getItem("col_id")).subscribe(res=>{
         })
         localStorage.clear();
-        this.router.navigate(['/selectapp']);
+        this.router.navigate(['/login']);
         }
         }
         ]

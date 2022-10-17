@@ -5,7 +5,6 @@ import { CommonApiService } from 'src/app/Login/common-api.service';
 import { LoadingController, Platform, ToastController } from '@ionic/angular';
 import {format} from "date-fns";
 import { DashboardService } from '../services/dashboard.service';
-import { SubscriberApiService } from '../subscribers/subscriber-api.service';
 @Component({
   selector: 'app-reset',
   templateUrl: './reset.page.html',
@@ -21,7 +20,7 @@ export class ResetPage implements OnInit {
   show1:boolean;
   mobile: any=[];
   constructor(private fb:FormBuilder,public dashboardservice:DashboardService,private router:Router,public commonserv: CommonApiService,public toastController: ToastController,
-    public loadingcontroller:LoadingController,private platform: Platform,private subservice:SubscriberApiService) {
+    public loadingcontroller:LoadingController,private platform: Platform) {
     this.resetForms = this.fb.group({
       name: ['',[Validators.required,Validators.pattern("^[a-zA-Z0-9]+$")]],
       // mobilenumber: ['',Validators.maxLength(11)], 
@@ -165,12 +164,9 @@ export class ResetPage implements OnInit {
    
   back(){
     if(localStorage.getItem("whichpage")=="login"){
-      if(localStorage.getItem("col_id")){
+      
       this.dashboardservice.logout(localStorage.getItem("col_id")).subscribe(res=>{ })
-      }else if(localStorage.getItem("memberid")){
-        this.commonserv.logout(localStorage.getItem("memberid")).subscribe(res=>{})
-      }
-      this.router.navigate(['/selectapp'])
+      this.router.navigate(['/login'])
       localStorage.clear()
     }else{
       this.router.navigate(['/subscribe-list/person-detail'])
@@ -184,7 +180,7 @@ export class ResetPage implements OnInit {
     }else if(localStorage.getItem("memberid")){
       this.commonserv.logout(localStorage.getItem("memberid")).subscribe(res=>{})
     }
-    this.router.navigate(['/selectapp'])
+    this.router.navigate(['/login'])
     localStorage.clear()
   }
   ngOnDestroy(){
