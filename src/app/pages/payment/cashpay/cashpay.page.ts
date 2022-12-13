@@ -107,7 +107,6 @@ console.log(this.new_array)
 }
 ngOnInit() {
   // console.log(Date.now)
-
   console.log(this.day,this.month,this.year)
   let token1=localStorage.getItem("tokens");
   this.userdata=JSON.parse(localStorage.getItem("user2"))
@@ -299,7 +298,7 @@ for (let i=0;i<this.result.length;i++){
   console.log(controlArray)
   }
   previous() {
-  this.router.navigateByUrl('payment/cash')
+  this.router.navigateByUrl('/payment/cash')
   }
   edit() {
   let navigationExtras: NavigationExtras = {
@@ -313,12 +312,11 @@ for (let i=0;i<this.result.length;i++){
 
 
 submitfunction(s){
-    this.present();
+   
     if(this.totals<200000 && this.total1==true){
     this.submitcash(s);
     }
     else{
-      this.dismiss();
       console.log("max limit")
       this.presentToast1("You have exceeded the Cash limit of ₹2 lakh/day")
     }
@@ -326,602 +324,610 @@ submitfunction(s){
 }
 
  submitcash(s) {
+  this.present()
  this.sampletest = s.formArrayName;
   console.log(this.sampletest)
- this.paymentservice.cash_details(this.sampledata1,localStorage.getItem("tokens")).subscribe(res => {
-  console.log(res);
-  this.receipt_res = res;
-  if (this.receipt_res != null) {
-  for (let i = 0; i < this.receipt_res.length; i++) {
-  console.log(this.receipt_res[i].AlreadyusedNo);
-  this.num = this.receipt_res[i].AlreadyusedNo + 1;
-  this.vnum = this.receipt_res[i].BranchName + '' + this.num;
-  this.num1.push(this.num);
-  console.log(this.num1);
-  this.vnum1.push(this.vnum)
-  console.log(this.vnum1)
-  this.ReceiptTable = {
-  "AlreadyusedNo": this.num,
-  "BranchID": this.receipt_res[i].BranchID,
-  "HeadID": this.receipt_res[i].HeadID,
-  "BranchName": this.receipt_res[i].BranchName,
-  "From": this.receipt_res[i].From,
-  "ID": this.receipt_res[i].ID,
-  "Isfinished": this.receipt_res[i].Isfinished,
-  "To": this.receipt_res[i].To,
-  "VoucherCode": this.receipt_res[i].VoucherCode,
-  "VoucherNumber": this.vnum
-  };
-  console.log(this.ReceiptTable);
-  this.ReceiptTable1.push(this.ReceiptTable);
-  console.log(this.ReceiptTable1);
-  }
-  this.paymentservice.receipt_update(this.ReceiptTable1,localStorage.getItem("tokens")).subscribe(res => {
-  console.log(res);
-  this.res_status = res;
-  console.log(this.res_status)
-  if (this.res_status == 0) {
-  for (let obj of this.sampletest) {
-  console.log("object:", obj);
-  for (let key in obj) {
-  }
-  }
-  for (let i = 0; i < this.sampletest.length; i++) {
-   
-  this.sampletest[i].prizedarrear = this.sampletest[i].prizedarrear.replace(/,/g, '');
-  this.sampletest[i].nonprizedarrear = this.sampletest[i].nonprizedarrear.replace(/,/g, '');
-  this.sampletest[i].amountreceived = this.sampletest[i].amountreceived.replace(/,/g, '');
-if(this.sampletest[i].amountpayable != ""){
-  this.sampletest[i].amountpayable= this.sampletest[i].amountpayable.replace(/,/g, '');
-
-}
-else{
-  this.sampletest[i].amountpayable =0;
-}
-console.log(this.sampletest[i].interest)
-
-  // var strFirstThree = this.sampletest[i].branchprefix.substring(0,3).toUpperCase();;
-  var strFirstThree = this.sampletest[i].branchprefix;
-  this.voucher_count +=1
-
-  if(this.voucher_count>9999999){
-    this.voucher_count=1;
-    this.Receipt_code +=1
-}
-  let number=this.padLeadingZeros(this.voucher_count, 7);
-  this.newvoucher_count=number;
-  console.log(this.newvoucher_count,"dashb")
-  this.new_name=strFirstThree;
-  //this.voucher_count=this.voucher_count+1;
-  console.log(this.trigger,"trigg")
-  let receiptcount=this.arraydata[this.Receipt_code].toUpperCase()
-  this.receipt_name='B' + '-'+ this.new_name+localStorage.getItem('col_id')+'-'+receiptcount+ this.newvoucher_count;
-  console.log(this.receipt_name,"rec")
-  if(this.sampletest[i].prizedarrear !=0 ){
-  this.cashpdata = [
-  {
-  "Amount": this.sampletest[i].amountpayable,
-  "PArrear":this.sampletest[i].prizedarrear,
-  "CurrentDue":this.sampletest[i].amountreceived,
-  "B_Group":this.B_Groups[i],
-  "IsDeleted": 0,
-  "MemberID": this.sampletest[i].m_id,            //member id converted to m_id
-  "ReceievedBy": "admin",
-  "Series": this.new_array[0].bankname ? "CHEQUE":"BCAPP",
-  "T_Day": format(new Date(this.nedate), "dd"),
-  "T_Month": format(new Date(this.nedate), "MM"),
-  "T_Year": format(new Date(this.nedate), "yyyy"),
-  "Trans_Medium": "0",
-  "Trans_Type": "1",
-  "TransactionKey": 0,
-  "Voucher_No": this.count + 1,
-  "Voucher_Type": "C",
-  "IsAccepted": "0",
-  "AppReceiptno": this.new_array[0].bankname ? "" : this.receipt_name,
-  "ISActive": true,
-  "BranchID": this.sampletest[i].branchid,
-  "ChitGroupId": this.sampletest[i].chitgroupid,
-  // "Narration": this.sampletest[i].narration,
-  "Head_Id": this.sampletest[i].headid,
-  "Other_Trans_Type": this.new_array[0].bankname ? 0 : 1,
-  "RootID": this.new_array[0].bankname ? "3" : this.sampletest[i].rootid ,
-  "M_Id": this.sampletest[i].memberid,
-  "Type": this.new_array[0].bankname ? "Cheque" : "Cash",
-  "MoneyCollId":this.post_id,
-  "VoucherCount":this.newvoucher_count,
-  "VoucherCode":this.Receipt_code,
-  "BankName":this.sampletest[i].bankname,
-  "CustomerBankName":this.sampletest[i].customerbankname,
-  "BankHeadID":this.result[0].bankheadid,
-  "ChequeNo":this.sampletest[i].chequenumber,
-  "ChequeDate":this.sampletest[i].chequedate
-  },
-  {
-  "Amount": this.sampletest[i].amountpayable,
-    "CurrentDue":this.sampletest[i].amountreceived,
-    "B_Group":this.B_Groups[i],
-  "PArrear":this.sampletest[i].prizedarrear,
-  "IsDeleted": 0,
-  "MemberID": this.sampletest[i].m_id,
-  "ReceievedBy": "admin",
-  "Series": this.new_array[0].bankname ? "CHEQUE":"BCAPP",
-  "T_Day": format(new Date(this.nedate), "dd"),
-  "T_Month": format(new Date(this.nedate), "MM"),
-  "T_Year": format(new Date(this.nedate), "yyyy"),
-  "Trans_Medium": "0",
-  "Trans_Type": "1",
-  "TransactionKey": 0,
-  "Voucher_No": this.count + 1,
-  "IsAccepted": "0",
-  "Voucher_Type": "D",
-  "AppReceiptno": this.new_array[0].bankname ? "" : this.receipt_name,
-  "ISActive": true,
-  "BranchID": this.sampletest[i].branchid,
-  "ChitGroupId": this.sampletest[i].chitgroupid,
-  // "Narration": this.sampletest[i].narration,
-  "Head_Id": this.sampletest[i].headid,
-  "Other_Trans_Type": this.new_array[0].bankname ? 0 : 1 ,
-  "RootID": this.new_array[0].bankname ? "3" : this.sampletest[i].rootid,
-  "M_Id": this.sampletest[i].memberid,
-  "Type": this.new_array[0].bankname ? "Cheque" : "Cash",
-  "MoneyCollId":this.post_id,
-  "VoucherCount":this.newvoucher_count,
-  "VoucherCode":this.Receipt_code,
-  "BankName":this.sampletest[i].bankname,
-  "CustomerBankName":this.sampletest[i].customerbankname,
-  "BankHeadID":this.result[0].bankheadid,
-  "ChequeNo":this.sampletest[i].chequenumber,
-  "ChequeDate":this.sampletest[i].chequedate
-  },
-  {
-  "Amount": +this.sampletest[i].interest + +this.sampletest[i].otheramount,
-  "Interest":this.sampletest[i].interest,
-  "B_Group":this.B_Groups[i],
-  "OtherAmt":this.sampletest[i].otheramount,
-  "IsDeleted": 0,
-  "MemberID": this.sampletest[i].m_id,
-  "ReceievedBy": "admin",
-  "Series": this.new_array[0].bankname ? "CHEQUE":"BCAPP",
-  "T_Day": format(new Date(this.nedate), "dd"),
-  "T_Month": format(new Date(this.nedate), "MM"),
-  "T_Year": format(new Date(this.nedate), "yyyy"),
-  "Trans_Medium": "0",
-  "Trans_Type": "1",
-  "TransactionKey": 0,
-  "Voucher_No": this.count + 1,
-  "Voucher_Type": "C",
-  "IsAccepted": "0",
-  "AppReceiptno": this.new_array[0].bankname ? "" : this.receipt_name,
-  "ISActive": true,
-  "BranchID": this.sampletest[i].branchid,
-  "ChitGroupId": this.sampletest[i].chitgroupid,
-  // "Narration": this.sampletest[i].narration,
-  "Head_Id": this.sampletest[i].headid,
-  "Other_Trans_Type": this.new_array[0].bankname ? 0 : 1,
-  "RootID": this.new_array[0].bankname ? "3" : this.sampletest[i].rootid,
-  "M_Id": this.sampletest[i].memberid,
-  "Type": "DefaultInterest",
-  "MoneyCollId":this.post_id,
-  "VoucherCount":this.newvoucher_count,
-  "VoucherCode":this.Receipt_code,
-  "CustomerBankName":this.sampletest[i].customerbankname,
-  "BankName":this.sampletest[i].bankname,
-  "BankHeadID":this.result[0].bankheadid,
-  "ChequeNo":this.sampletest[i].chequenumber,
-  "ChequeDate":this.sampletest[i].chequedate
-  },
-  {
-  "Amount": +this.sampletest[i].interest + +this.sampletest[i].otheramount,
-  "Interest":this.sampletest[i].interest,
-  "B_Group":this.B_Groups[i],
-  "OtherAmt":this.sampletest[i].otheramount,
-  "IsDeleted": 0,
-  "MemberID": this.sampletest[i].m_id,
-  "ReceievedBy": "admin",
-  "Series": this.new_array[0].bankname ? "CHEQUE":"BCAPP",
-  "T_Day": format(new Date(this.nedate), "dd"),
-  "T_Month": format(new Date(this.nedate), "MM"),
-  "T_Year": format(new Date(this.nedate), "yyyy"),
-  "Trans_Medium": "0",
-  "Trans_Type": "1",
-  "TransactionKey": 0,
-  "Voucher_No": this.count + 1,
-  "Voucher_Type": "D",
-  "IsAccepted": "0",
-  "AppReceiptno": this.new_array[0].bankname ? "" : this.receipt_name,
-  "ISActive": true,
-  "BranchID": this.sampletest[i].branchid,
-  "ChitGroupId": this.sampletest[i].chitgroupid,
-  // "Narration": this.sampletest[i].narration,
-  "Head_Id": this.sampletest[i].headid,
-  "Other_Trans_Type": this.new_array[0].bankname ? 0 : 1,
-  "RootID": this.new_array[0].bankname ? "3" : this.sampletest[i].rootid,
-  "M_Id": this.sampletest[i].memberid,
-  "Type": "DefaultInterest",
-  "MoneyCollId":this.post_id,
-  "VoucherCount":this.newvoucher_count,
-  "VoucherCode":this.Receipt_code,
-  "CustomerBankName":this.sampletest[i].customerbankname,
-  "BankName":this.sampletest[i].bankname,
-  "BankHeadID":this.result[0].bankheadid,
-  "ChequeNo":this.sampletest[i].chequenumber,
-  "ChequeDate":this.sampletest[i].chequedate
-  }
-  ]
-  }
-  else if(this.sampletest[i].nonprizedarrear != 0){
-  this.cashpdata = [
-  {
-  "Amount": this.sampletest[i].amountpayable,
-  "CurrentDue":this.sampletest[i].amountreceived,
-  "B_Group":this.B_Groups[i],
-  "NPArrear":this.sampletest[i].nonprizedarrear,
-  "IsDeleted": 0,
-  "MemberID": this.sampletest[i].m_id,
-  "ReceievedBy": "admin",
-  "Series": this.new_array[0].bankname ? "CHEQUE":"BCAPP",
-  "T_Day": format(new Date(this.nedate), "dd"),
-  "T_Month": format(new Date(this.nedate), "MM"),
-  "T_Year": format(new Date(this.nedate), "yyyy"),
-  "Trans_Medium": "0",
-  "Trans_Type": "1",
-  "TransactionKey": 0,
-  "Voucher_No": this.count + 1,
-  "Voucher_Type": "C",
-  "IsAccepted": "0",
-  "AppReceiptno": this.new_array[0].bankname ? "" : this.receipt_name,
-  "ISActive": true,
-  "BranchID": this.sampletest[i].branchid,
-  "ChitGroupId": this.sampletest[i].chitgroupid,
-  // "Narration": this.sampletest[i].narration,
-  "Head_Id": this.sampletest[i].headid,
-  "Other_Trans_Type": this.new_array[0].bankname ? 0 : 1,
-  "RootID": this.new_array[0].bankname ? "3" : this.sampletest[i].rootid,
-  "M_Id": this.sampletest[i].memberid,
-  "Type": this.new_array[0].bankname ? "Cheque" : "Cash",
-  "MoneyCollId":this.post_id,
-  "VoucherCount":this.newvoucher_count,
-  "VoucherCode":this.Receipt_code,
-  "BankName":this.sampletest[i].bankname,
-  "CustomerBankName":this.sampletest[i].customerbankname,
-  "BankHeadID":this.result[0].bankheadid,
-  "ChequeNo":this.sampletest[i].chequenumber,
-  "ChequeDate":this.sampletest[i].chequedate
-  },
-  {
-  "Amount": this.sampletest[i].amountpayable,
-  "CurrentDue":this.sampletest[i].amountreceived,
-  "B_Group":this.B_Groups[i],
-  "NPArrear":this.sampletest[i].nonprizedarrear,
-  "IsDeleted": 0,
-  "MemberID": this.sampletest[i].m_id,
-  "ReceievedBy": "admin",
-  "Series": this.new_array[0].bankname ? "CHEQUE":"BCAPP",
-  "T_Day": format(new Date(this.nedate), "dd"),
-  "T_Month": format(new Date(this.nedate), "MM"),
-  "T_Year": format(new Date(this.nedate), "yyyy"),
-  "Trans_Medium": "0",
-  "Trans_Type": "1",
-  "TransactionKey": 0,
-  "Voucher_No": this.count + 1,
-  "IsAccepted": "0",
-  "Voucher_Type": "D",
-  "AppReceiptno": this.new_array[0].bankname ? "" : this.receipt_name,
-  "ISActive": true,
-  "BranchID": this.sampletest[i].branchid,
-  "ChitGroupId": this.sampletest[i].chitgroupid,
-  // "Narration": this.sampletest[i].narration,
-  "Head_Id": this.sampletest[i].headid,
-  "Other_Trans_Type": this.new_array[0].bankname ? 0 : 1,
-  "RootID": this.new_array[0].bankname ? "3" : this.sampletest[i].rootid,
-  "M_Id": this.sampletest[i].memberid,
-  "Type": this.new_array[0].bankname ? "Cheque" : "Cash",
-  "MoneyCollId":this.post_id,
-  "VoucherCount":this.newvoucher_count,
-  "VoucherCode":this.Receipt_code,
-  "BankName":this.sampletest[i].bankname,
-  "CustomerBankName":this.sampletest[i].customerbankname,
-  "BankHeadID":this.result[0].bankheadid,
-  "ChequeNo":this.sampletest[i].chequenumber,
-  "ChequeDate":this.sampletest[i].chequedate
-  },
-  {
-  "Amount": +this.sampletest[i].interest + +this.sampletest[i].otheramount,
-  "Interest":this.sampletest[i].interest,
-  "OtherAmt":this.sampletest[i].otheramount,
-  "B_Group":this.B_Groups[i],
-  "IsDeleted": 0,
-  "MemberID": this.sampletest[i].m_id,
-  "ReceievedBy": "admin",
-  "Series": this.new_array[0].bankname ? "CHEQUE":"BCAPP",
-  "T_Day": format(new Date(this.nedate), "dd"),
-  "T_Month": format(new Date(this.nedate), "MM"),
-  "T_Year": format(new Date(this.nedate), "yyyy"),
-  "Trans_Medium": "0",
-  "Trans_Type": "1",
-  "TransactionKey": 0,
-  "Voucher_No": this.count + 1,
-  "Voucher_Type": "C",
-  "IsAccepted": "0",
-  "AppReceiptno": this.new_array[0].bankname ? "" : this.receipt_name,
-  "ISActive": true,
-  "BranchID": this.sampletest[i].branchid,
-  "ChitGroupId": this.sampletest[i].chitgroupid,
-  // "Narration": this.sampletest[i].narration,
-  "Head_Id": this.sampletest[i].headid,
-  "Other_Trans_Type": this.new_array[0].bankname ? 0 : 1,
-  "RootID": this.new_array[0].bankname ? "3" : this.sampletest[i].rootid,
-  "M_Id": this.sampletest[i].memberid,
-  "Type": "DefaultInterest",
-  "MoneyCollId":this.post_id,
-  "VoucherCount":this.newvoucher_count,
-  "VoucherCode":this.Receipt_code,
-  "BankName":this.sampletest[i].bankname,
-  "CustomerBankName":this.sampletest[i].customerbankname,
-  "BankHeadID":this.result[0].bankheadid,
-  "ChequeNo":this.sampletest[i].chequenumber,
-  "ChequeDate":this.sampletest[i].chequedate
-  },
-  {
-  "Amount": +this.sampletest[i].interest + +this.sampletest[i].otheramount,
-  "Interest":this.sampletest[i].interest,
-  "B_Group":this.B_Groups[i],
-  "OtherAmt":this.sampletest[i].otheramount,
-  "IsDeleted": 0,
-  "MemberID": this.sampletest[i].m_id,
-  "ReceievedBy": "admin",
-  "Series": this.new_array[0].bankname ? "CHEQUE":"BCAPP",
-  "T_Day": format(new Date(this.nedate), "dd"),
-  "T_Month": format(new Date(this.nedate), "MM"),
-  "T_Year": format(new Date(this.nedate), "yyyy"),
-  "Trans_Medium": "0",
-  "Trans_Type": "1",
-  "TransactionKey": 0,
-  "Voucher_No": this.count + 1,
-  "Voucher_Type": "D",
-  "IsAccepted": "0",
-  "AppReceiptno": this.new_array[0].bankname ? "" : this.receipt_name,
-  "ISActive": true,
-  "BranchID": this.sampletest[i].branchid,
-  "ChitGroupId": this.sampletest[i].chitgroupid,
-  // "Narration": this.sampletest[i].narration,
-  "Head_Id": this.sampletest[i].headid,
-  "Other_Trans_Type": this.new_array[0].bankname ? 0 : 1,
-  "RootID": this.new_array[0].bankname ? "3" : this.sampletest[i].rootid,
-  "M_Id": this.sampletest[i].memberid,
-  "Type": "DefaultInterest",
-  "MoneyCollId":this.post_id,
-  "VoucherCount":this.newvoucher_count,
-  "VoucherCode":this.Receipt_code,
-  "CustomerBankName":this.sampletest[i].customerbankname,
-  "BankName":this.sampletest[i].bankname,
-  "BankHeadID":this.result[0].bankheadid,
-  "ChequeNo":this.sampletest[i].chequenumber,
-  "ChequeDate":this.sampletest[i].chequedate
-  }
-  ]
-  }
-  else{
-  this.cashpdata = [
-  {
-  "Amount": this.sampletest[i].amountpayable,
-    "CurrentDue":this.sampletest[i].amountreceived,
-    "B_Group":this.B_Groups[i],
-  "NPArrear":this.sampletest[i].nonprizedarrear,
-  "IsDeleted": 0,
-  "MemberID": this.sampletest[i].m_id,
-  "ReceievedBy": "admin",
-  "Series": this.new_array[0].bankname ? "CHEQUE":"BCAPP",
-  "T_Day": format(new Date(this.nedate), "dd"),
-  "T_Month": format(new Date(this.nedate), "MM"),
-  "T_Year": format(new Date(this.nedate), "yyyy"),
-  "Trans_Medium": "0",
-  "Trans_Type": "1",
-  "TransactionKey": 0,
-  "Voucher_No": this.count + 1,
-  "Voucher_Type": "C",
-  "IsAccepted": "0",
-  "AppReceiptno": this.new_array[0].bankname ? "" : this.receipt_name,
-  "ISActive": true,
-  "BranchID": this.sampletest[i].branchid,
-  "ChitGroupId": this.sampletest[i].chitgroupid,
-  // "Narration": this.sampletest[i].narration,
-  "Head_Id": this.sampletest[i].headid,
-  "Other_Trans_Type": this.new_array[0].bankname ? 0 : 1,
-  "RootID": this.new_array[0].bankname ? "3" : this.sampletest[i].rootid,
-  "M_Id": this.sampletest[i].memberid,
-  "Type": this.new_array[0].bankname ? "Cheque" : "Cash",
-  "MoneyCollId":this.post_id,
-  "VoucherCount":this.newvoucher_count,
-  "VoucherCode":this.Receipt_code,
-  "BankName":this.sampletest[i].bankname,
-  "CustomerBankName":this.sampletest[i].customerbankname,
-  "BankHeadID":this.result[0].bankheadid,
-  "ChequeNo":this.sampletest[i].chequenumber,
-  "ChequeDate":this.sampletest[i].chequedate
-  },
-  {
-  "Amount": this.sampletest[i].amountpayable,
-   "CurrentDue":this.sampletest[i].amountreceived,
-   "B_Group":this.B_Groups[i],
-  "NPArrear":this.sampletest[i].nonprizedarrear,
-  "IsDeleted": 0,
-  "MemberID": this.sampletest[i].m_id,
-  "ReceievedBy": "admin",
-  "Series": this.new_array[0].bankname ? "CHEQUE":"BCAPP",
-  "T_Day": format(new Date(this.nedate), "dd"),
-  "T_Month": format(new Date(this.nedate), "MM"),
-  "T_Year": format(new Date(this.nedate), "yyyy"),
-  "Trans_Medium": "0",
-  "Trans_Type": "1",
-  "TransactionKey": 0,
-  "Voucher_No": this.count + 1,
-  "IsAccepted": "0",
-  "Voucher_Type": "D",
-  "AppReceiptno": this.new_array[0].bankname ? "" : this.receipt_name,
-  "ISActive": true,
-  "BranchID": this.sampletest[i].branchid,
-  "ChitGroupId": this.sampletest[i].chitgroupid,
-  // "Narration": this.sampletest[i].narration,
-  "Head_Id": this.sampletest[i].headid,
-  "Other_Trans_Type": this.new_array[0].bankname ? 0 : 1,
-  "RootID": this.new_array[0].bankname ? "3" : this.sampletest[i].rootid,
-  "M_Id": this.sampletest[i].memberid,
-  "Type": this.new_array[0].bankname ? "Cheque" : "Cash",
-  "MoneyCollId":this.post_id,
-  "VoucherCount":this.newvoucher_count,
-  "VoucherCode":this.Receipt_code,
-  "BankName":this.sampletest[i].bankname,
-  "CustomerBankName":this.sampletest[i].customerbankname,
-  "BankHeadID":this.result[0].bankheadid,
-  "ChequeNo":this.sampletest[i].chequenumber,
-  "ChequeDate":this.sampletest[i].chequedate
-  },
-  {
-  "Amount": +this.sampletest[i].interest + +this.sampletest[i].otheramount,
-  "Interest":this.sampletest[i].interest,
-  "B_Group":this.B_Groups[i],
-  "OtherAmt":this.sampletest[i].otheramount,
-  "IsDeleted": 0,
-  "MemberID": this.sampletest[i].m_id,
-  "ReceievedBy": "admin",
-  "Series": this.new_array[0].bankname ? "CHEQUE":"BCAPP",
-  "T_Day": format(new Date(this.nedate), "dd"),
-  "T_Month": format(new Date(this.nedate), "MM"),
-  "T_Year": format(new Date(this.nedate), "yyyy"),
-  "Trans_Medium": "0",
-  "Trans_Type": "1",
-  "TransactionKey": 0,
-  "Voucher_No": this.count + 1,
-  "Voucher_Type": "C",
-  "IsAccepted": "0",
-  "AppReceiptno": this.new_array[0].bankname ? "" : this.receipt_name,
-  "ISActive": true,
-  "BranchID": this.sampletest[i].branchid,
-  "ChitGroupId": this.sampletest[i].chitgroupid,
-  // "Narration": this.sampletest[i].narration,
-  "Head_Id": this.sampletest[i].headid,
-  "Other_Trans_Type": this.new_array[0].bankname ? 0 : 1,
-  "RootID": this.new_array[0].bankname ? "3" : this.sampletest[i].rootid,
-  "M_Id": this.sampletest[i].memberid,
-  "Type": "DefaultInterest",
-  "MoneyCollId":this.post_id,
-  "VoucherCount":this.newvoucher_count,
-  "VoucherCode":this.Receipt_code,
-  "BankName":this.sampletest[i].bankname,
-  "CustomerBankName":this.sampletest[i].customerbankname,
-  "BankHeadID":this.result[0].bankheadid,
-  "ChequeNo":this.sampletest[i].chequenumber,
-  "ChequeDate":this.sampletest[i].chequedate
-  },
-  {
-  "Amount": +this.sampletest[i].interest + +this.sampletest[i].otheramount,
-  "Interest":this.sampletest[i].interest,
-  "B_Group":this.B_Groups[i],
-  "OtherAmt":this.sampletest[i].otheramount,
-  "IsDeleted": 0,
-  "MemberID": this.sampletest[i].m_id,
-  "ReceievedBy": "admin",
-  "Series": this.new_array[0].bankname ? "CHEQUE":"BCAPP",
-  "T_Day": format(new Date(this.nedate), "dd"),
-  "T_Month": format(new Date(this.nedate), "MM"),
-  "T_Year": format(new Date(this.nedate), "yyyy"),
-  "Trans_Medium": "0",
-  "Trans_Type": "1",
-  "TransactionKey": 0,
-  "Voucher_No": this.count + 1,
-  "Voucher_Type": "D",
-  "IsAccepted": "0",
-  "AppReceiptno": this.new_array[0].bankname ? "" : this.receipt_name,
-  "ISActive": true,
-  "BranchID": this.sampletest[i].branchid,
-  "ChitGroupId": this.sampletest[i].chitgroupid,
-  // "Narration": this.sampletest[i].narration,
-  "Head_Id": this.sampletest[i].headid,
-  "Other_Trans_Type": this.new_array[0].bankname ? 0 : 1,
-  "RootID": this.new_array[0].bankname ? "3" : this.sampletest[i].rootid,
-  "M_Id": this.sampletest[i].memberid,
-  "Type": "DefaultInterest",
-  "MoneyCollId":this.post_id,
-  "VoucherCount":this.newvoucher_count,
-  "VoucherCode":this.Receipt_code,
-  "BankName":this.sampletest[i].bankname,
-  "CustomerBankName":this.sampletest[i].customerbankname,
-  "BankHeadID":this.result[0].bankheadid,
-  "ChequeNo":this.sampletest[i].chequenumber,
-  "ChequeDate":this.sampletest[i].chequedate
-  }
-  ]
-  
-  }
-  console.log(this.cashpdata)
-  this.cashdata.push(this.cashpdata);
-  this.cashdata1 = [].concat.apply([], this.cashdata);
-  for (let i = this.cashdata1.length - 1; i >= 0; --i) {
-  if (this.cashdata1[i].Amount == "0") {
-  this.cashdata1.splice(i, 1);
-  }
-  }
-  }
-  if(this.cashdata1){
-    this.cashfunction(this.cashdata1)
-  }
- 
+  if(this.sampletest[0].mobilenumber == ""){
+    this.dismiss();
+    this.presentToast("Please enter Mobile Number");
   }
   else {
-  // alert('error');
-  // loading.dismiss();
-  this.dismiss();
-  }
-  } ,(error:HttpErrorResponse)=>{
-    if(error.status ===401){    
+    this.paymentservice.cash_details(this.sampledata1,localStorage.getItem("tokens")).subscribe(res => {
+      console.log(res);
+      this.receipt_res = res;
+      if (this.receipt_res != null) {
+      for (let i = 0; i < this.receipt_res.length; i++) {
+      console.log(this.receipt_res[i].AlreadyusedNo);
+      this.num = this.receipt_res[i].AlreadyusedNo + 1;
+      this.vnum = this.receipt_res[i].BranchName + '' + this.num;
+      this.num1.push(this.num);
+      console.log(this.num1);
+      this.vnum1.push(this.vnum)
+      console.log(this.vnum1)
+      this.ReceiptTable = {
+      "AlreadyusedNo": this.num,
+      "BranchID": this.receipt_res[i].BranchID,
+      "HeadID": this.receipt_res[i].HeadID,
+      "BranchName": this.receipt_res[i].BranchName,
+      "From": this.receipt_res[i].From,
+      "ID": this.receipt_res[i].ID,
+      "Isfinished": this.receipt_res[i].Isfinished,
+      "To": this.receipt_res[i].To,
+      "VoucherCode": this.receipt_res[i].VoucherCode,
+      "VoucherNumber": this.vnum
+      };
+      console.log(this.ReceiptTable);
+      this.ReceiptTable1.push(this.ReceiptTable);
+      console.log(this.ReceiptTable1);
+      }
+      this.paymentservice.receipt_update(this.ReceiptTable1,localStorage.getItem("tokens")).subscribe(res => {
+      console.log(res);
+      this.res_status = res;
+      console.log(this.res_status)
+      if (this.res_status == 0) {
+      for (let obj of this.sampletest) {
+      console.log("object:", obj);
+      for (let key in obj) {
+      }
+      }
+      for (let i = 0; i < this.sampletest.length; i++) {
+       
+      this.sampletest[i].prizedarrear = this.sampletest[i].prizedarrear.replace(/,/g, '');
+      this.sampletest[i].nonprizedarrear = this.sampletest[i].nonprizedarrear.replace(/,/g, '');
+      this.sampletest[i].amountreceived = this.sampletest[i].amountreceived.replace(/,/g, '');
+    if(this.sampletest[i].amountpayable != ""){
+      this.sampletest[i].amountpayable= this.sampletest[i].amountpayable.replace(/,/g, '');
+    
+    }
+    else{
+      this.sampletest[i].amountpayable =0;
+    }
+    console.log(this.sampletest[i].interest)
+    
+      // var strFirstThree = this.sampletest[i].branchprefix.substring(0,3).toUpperCase();;
+      var strFirstThree = this.sampletest[i].branchprefix;
+      this.voucher_count +=1
+    
+      if(this.voucher_count>9999999){
+        this.voucher_count=1;
+        this.Receipt_code +=1
+    }
+      let number=this.padLeadingZeros(this.voucher_count, 7);
+      this.newvoucher_count=number;
+      console.log(this.newvoucher_count,"dashb")
+      this.new_name=strFirstThree;
+      //this.voucher_count=this.voucher_count+1;
+      console.log(this.trigger,"trigg")
+      let receiptcount=this.arraydata[this.Receipt_code].toUpperCase()
+      this.receipt_name='B' + '-'+ this.new_name+localStorage.getItem('col_id')+'-'+receiptcount+ this.newvoucher_count;
+      console.log(this.receipt_name,"rec")
+      if(this.sampletest[i].prizedarrear !=0 ){
+      this.cashpdata = [
+      {
+      "Amount": this.sampletest[i].amountpayable,
+      "PArrear":this.sampletest[i].prizedarrear,
+      "CurrentDue":this.sampletest[i].amountreceived,
+      "B_Group":this.B_Groups[i],
+      "IsDeleted": 0,
+      "MemberID": this.sampletest[i].m_id,            //member id converted to m_id
+      "ReceievedBy": "admin",
+      "Series": this.new_array[0].bankname ? "CHEQUE":"BCAPP",
+      "T_Day": format(new Date(this.nedate), "dd"),
+      "T_Month": format(new Date(this.nedate), "MM"),
+      "T_Year": format(new Date(this.nedate), "yyyy"),
+      "Trans_Medium": "0",
+      "Trans_Type": "1",
+      "TransactionKey": 0,
+      "Voucher_No": this.count + 1,
+      "Voucher_Type": "C",
+      "IsAccepted": "0",
+      "AppReceiptno": this.new_array[0].bankname ? "" : this.receipt_name,
+      "ISActive": true,
+      "BranchID": this.sampletest[i].branchid,
+      "ChitGroupId": this.sampletest[i].chitgroupid,
+      // "Narration": this.sampletest[i].narration,
+      "Head_Id": this.sampletest[i].headid,
+      "Other_Trans_Type": this.new_array[0].bankname ? 0 : 1,
+      "RootID": this.new_array[0].bankname ? "3" : this.sampletest[i].rootid ,
+      "M_Id": this.sampletest[i].memberid,
+      "Type": this.new_array[0].bankname ? "Cheque" : "Cash",
+      "MoneyCollId":this.post_id,
+      "VoucherCount":this.newvoucher_count,
+      "VoucherCode":this.Receipt_code,
+      "BankName":this.sampletest[i].bankname,
+      "CustomerBankName":this.sampletest[i].customerbankname,
+      "BankHeadID":this.result[0].bankheadid,
+      "ChequeNo":this.sampletest[i].chequenumber,
+      "ChequeDate":this.sampletest[i].chequedate
+      },
+      {
+      "Amount": this.sampletest[i].amountpayable,
+        "CurrentDue":this.sampletest[i].amountreceived,
+        "B_Group":this.B_Groups[i],
+      "PArrear":this.sampletest[i].prizedarrear,
+      "IsDeleted": 0,
+      "MemberID": this.sampletest[i].m_id,
+      "ReceievedBy": "admin",
+      "Series": this.new_array[0].bankname ? "CHEQUE":"BCAPP",
+      "T_Day": format(new Date(this.nedate), "dd"),
+      "T_Month": format(new Date(this.nedate), "MM"),
+      "T_Year": format(new Date(this.nedate), "yyyy"),
+      "Trans_Medium": "0",
+      "Trans_Type": "1",
+      "TransactionKey": 0,
+      "Voucher_No": this.count + 1,
+      "IsAccepted": "0",
+      "Voucher_Type": "D",
+      "AppReceiptno": this.new_array[0].bankname ? "" : this.receipt_name,
+      "ISActive": true,
+      "BranchID": this.sampletest[i].branchid,
+      "ChitGroupId": this.sampletest[i].chitgroupid,
+      // "Narration": this.sampletest[i].narration,
+      "Head_Id": this.sampletest[i].headid,
+      "Other_Trans_Type": this.new_array[0].bankname ? 0 : 1 ,
+      "RootID": this.new_array[0].bankname ? "3" : this.sampletest[i].rootid,
+      "M_Id": this.sampletest[i].memberid,
+      "Type": this.new_array[0].bankname ? "Cheque" : "Cash",
+      "MoneyCollId":this.post_id,
+      "VoucherCount":this.newvoucher_count,
+      "VoucherCode":this.Receipt_code,
+      "BankName":this.sampletest[i].bankname,
+      "CustomerBankName":this.sampletest[i].customerbankname,
+      "BankHeadID":this.result[0].bankheadid,
+      "ChequeNo":this.sampletest[i].chequenumber,
+      "ChequeDate":this.sampletest[i].chequedate
+      },
+      {
+      "Amount": +this.sampletest[i].interest + +this.sampletest[i].otheramount,
+      "Interest":this.sampletest[i].interest,
+      "B_Group":this.B_Groups[i],
+      "OtherAmt":this.sampletest[i].otheramount,
+      "IsDeleted": 0,
+      "MemberID": this.sampletest[i].m_id,
+      "ReceievedBy": "admin",
+      "Series": this.new_array[0].bankname ? "CHEQUE":"BCAPP",
+      "T_Day": format(new Date(this.nedate), "dd"),
+      "T_Month": format(new Date(this.nedate), "MM"),
+      "T_Year": format(new Date(this.nedate), "yyyy"),
+      "Trans_Medium": "0",
+      "Trans_Type": "1",
+      "TransactionKey": 0,
+      "Voucher_No": this.count + 1,
+      "Voucher_Type": "C",
+      "IsAccepted": "0",
+      "AppReceiptno": this.new_array[0].bankname ? "" : this.receipt_name,
+      "ISActive": true,
+      "BranchID": this.sampletest[i].branchid,
+      "ChitGroupId": this.sampletest[i].chitgroupid,
+      // "Narration": this.sampletest[i].narration,
+      "Head_Id": this.sampletest[i].headid,
+      "Other_Trans_Type": this.new_array[0].bankname ? 0 : 1,
+      "RootID": this.new_array[0].bankname ? "3" : this.sampletest[i].rootid,
+      "M_Id": this.sampletest[i].memberid,
+      "Type": "DefaultInterest",
+      "MoneyCollId":this.post_id,
+      "VoucherCount":this.newvoucher_count,
+      "VoucherCode":this.Receipt_code,
+      "CustomerBankName":this.sampletest[i].customerbankname,
+      "BankName":this.sampletest[i].bankname,
+      "BankHeadID":this.result[0].bankheadid,
+      "ChequeNo":this.sampletest[i].chequenumber,
+      "ChequeDate":this.sampletest[i].chequedate
+      },
+      {
+      "Amount": +this.sampletest[i].interest + +this.sampletest[i].otheramount,
+      "Interest":this.sampletest[i].interest,
+      "B_Group":this.B_Groups[i],
+      "OtherAmt":this.sampletest[i].otheramount,
+      "IsDeleted": 0,
+      "MemberID": this.sampletest[i].m_id,
+      "ReceievedBy": "admin",
+      "Series": this.new_array[0].bankname ? "CHEQUE":"BCAPP",
+      "T_Day": format(new Date(this.nedate), "dd"),
+      "T_Month": format(new Date(this.nedate), "MM"),
+      "T_Year": format(new Date(this.nedate), "yyyy"),
+      "Trans_Medium": "0",
+      "Trans_Type": "1",
+      "TransactionKey": 0,
+      "Voucher_No": this.count + 1,
+      "Voucher_Type": "D",
+      "IsAccepted": "0",
+      "AppReceiptno": this.new_array[0].bankname ? "" : this.receipt_name,
+      "ISActive": true,
+      "BranchID": this.sampletest[i].branchid,
+      "ChitGroupId": this.sampletest[i].chitgroupid,
+      // "Narration": this.sampletest[i].narration,
+      "Head_Id": this.sampletest[i].headid,
+      "Other_Trans_Type": this.new_array[0].bankname ? 0 : 1,
+      "RootID": this.new_array[0].bankname ? "3" : this.sampletest[i].rootid,
+      "M_Id": this.sampletest[i].memberid,
+      "Type": "DefaultInterest",
+      "MoneyCollId":this.post_id,
+      "VoucherCount":this.newvoucher_count,
+      "VoucherCode":this.Receipt_code,
+      "CustomerBankName":this.sampletest[i].customerbankname,
+      "BankName":this.sampletest[i].bankname,
+      "BankHeadID":this.result[0].bankheadid,
+      "ChequeNo":this.sampletest[i].chequenumber,
+      "ChequeDate":this.sampletest[i].chequedate
+      }
+      ]
+      }
+      else if(this.sampletest[i].nonprizedarrear != 0){
+      this.cashpdata = [
+      {
+      "Amount": this.sampletest[i].amountpayable,
+      "CurrentDue":this.sampletest[i].amountreceived,
+      "B_Group":this.B_Groups[i],
+      "NPArrear":this.sampletest[i].nonprizedarrear,
+      "IsDeleted": 0,
+      "MemberID": this.sampletest[i].m_id,
+      "ReceievedBy": "admin",
+      "Series": this.new_array[0].bankname ? "CHEQUE":"BCAPP",
+      "T_Day": format(new Date(this.nedate), "dd"),
+      "T_Month": format(new Date(this.nedate), "MM"),
+      "T_Year": format(new Date(this.nedate), "yyyy"),
+      "Trans_Medium": "0",
+      "Trans_Type": "1",
+      "TransactionKey": 0,
+      "Voucher_No": this.count + 1,
+      "Voucher_Type": "C",
+      "IsAccepted": "0",
+      "AppReceiptno": this.new_array[0].bankname ? "" : this.receipt_name,
+      "ISActive": true,
+      "BranchID": this.sampletest[i].branchid,
+      "ChitGroupId": this.sampletest[i].chitgroupid,
+      // "Narration": this.sampletest[i].narration,
+      "Head_Id": this.sampletest[i].headid,
+      "Other_Trans_Type": this.new_array[0].bankname ? 0 : 1,
+      "RootID": this.new_array[0].bankname ? "3" : this.sampletest[i].rootid,
+      "M_Id": this.sampletest[i].memberid,
+      "Type": this.new_array[0].bankname ? "Cheque" : "Cash",
+      "MoneyCollId":this.post_id,
+      "VoucherCount":this.newvoucher_count,
+      "VoucherCode":this.Receipt_code,
+      "BankName":this.sampletest[i].bankname,
+      "CustomerBankName":this.sampletest[i].customerbankname,
+      "BankHeadID":this.result[0].bankheadid,
+      "ChequeNo":this.sampletest[i].chequenumber,
+      "ChequeDate":this.sampletest[i].chequedate
+      },
+      {
+      "Amount": this.sampletest[i].amountpayable,
+      "CurrentDue":this.sampletest[i].amountreceived,
+      "B_Group":this.B_Groups[i],
+      "NPArrear":this.sampletest[i].nonprizedarrear,
+      "IsDeleted": 0,
+      "MemberID": this.sampletest[i].m_id,
+      "ReceievedBy": "admin",
+      "Series": this.new_array[0].bankname ? "CHEQUE":"BCAPP",
+      "T_Day": format(new Date(this.nedate), "dd"),
+      "T_Month": format(new Date(this.nedate), "MM"),
+      "T_Year": format(new Date(this.nedate), "yyyy"),
+      "Trans_Medium": "0",
+      "Trans_Type": "1",
+      "TransactionKey": 0,
+      "Voucher_No": this.count + 1,
+      "IsAccepted": "0",
+      "Voucher_Type": "D",
+      "AppReceiptno": this.new_array[0].bankname ? "" : this.receipt_name,
+      "ISActive": true,
+      "BranchID": this.sampletest[i].branchid,
+      "ChitGroupId": this.sampletest[i].chitgroupid,
+      // "Narration": this.sampletest[i].narration,
+      "Head_Id": this.sampletest[i].headid,
+      "Other_Trans_Type": this.new_array[0].bankname ? 0 : 1,
+      "RootID": this.new_array[0].bankname ? "3" : this.sampletest[i].rootid,
+      "M_Id": this.sampletest[i].memberid,
+      "Type": this.new_array[0].bankname ? "Cheque" : "Cash",
+      "MoneyCollId":this.post_id,
+      "VoucherCount":this.newvoucher_count,
+      "VoucherCode":this.Receipt_code,
+      "BankName":this.sampletest[i].bankname,
+      "CustomerBankName":this.sampletest[i].customerbankname,
+      "BankHeadID":this.result[0].bankheadid,
+      "ChequeNo":this.sampletest[i].chequenumber,
+      "ChequeDate":this.sampletest[i].chequedate
+      },
+      {
+      "Amount": +this.sampletest[i].interest + +this.sampletest[i].otheramount,
+      "Interest":this.sampletest[i].interest,
+      "OtherAmt":this.sampletest[i].otheramount,
+      "B_Group":this.B_Groups[i],
+      "IsDeleted": 0,
+      "MemberID": this.sampletest[i].m_id,
+      "ReceievedBy": "admin",
+      "Series": this.new_array[0].bankname ? "CHEQUE":"BCAPP",
+      "T_Day": format(new Date(this.nedate), "dd"),
+      "T_Month": format(new Date(this.nedate), "MM"),
+      "T_Year": format(new Date(this.nedate), "yyyy"),
+      "Trans_Medium": "0",
+      "Trans_Type": "1",
+      "TransactionKey": 0,
+      "Voucher_No": this.count + 1,
+      "Voucher_Type": "C",
+      "IsAccepted": "0",
+      "AppReceiptno": this.new_array[0].bankname ? "" : this.receipt_name,
+      "ISActive": true,
+      "BranchID": this.sampletest[i].branchid,
+      "ChitGroupId": this.sampletest[i].chitgroupid,
+      // "Narration": this.sampletest[i].narration,
+      "Head_Id": this.sampletest[i].headid,
+      "Other_Trans_Type": this.new_array[0].bankname ? 0 : 1,
+      "RootID": this.new_array[0].bankname ? "3" : this.sampletest[i].rootid,
+      "M_Id": this.sampletest[i].memberid,
+      "Type": "DefaultInterest",
+      "MoneyCollId":this.post_id,
+      "VoucherCount":this.newvoucher_count,
+      "VoucherCode":this.Receipt_code,
+      "BankName":this.sampletest[i].bankname,
+      "CustomerBankName":this.sampletest[i].customerbankname,
+      "BankHeadID":this.result[0].bankheadid,
+      "ChequeNo":this.sampletest[i].chequenumber,
+      "ChequeDate":this.sampletest[i].chequedate
+      },
+      {
+      "Amount": +this.sampletest[i].interest + +this.sampletest[i].otheramount,
+      "Interest":this.sampletest[i].interest,
+      "B_Group":this.B_Groups[i],
+      "OtherAmt":this.sampletest[i].otheramount,
+      "IsDeleted": 0,
+      "MemberID": this.sampletest[i].m_id,
+      "ReceievedBy": "admin",
+      "Series": this.new_array[0].bankname ? "CHEQUE":"BCAPP",
+      "T_Day": format(new Date(this.nedate), "dd"),
+      "T_Month": format(new Date(this.nedate), "MM"),
+      "T_Year": format(new Date(this.nedate), "yyyy"),
+      "Trans_Medium": "0",
+      "Trans_Type": "1",
+      "TransactionKey": 0,
+      "Voucher_No": this.count + 1,
+      "Voucher_Type": "D",
+      "IsAccepted": "0",
+      "AppReceiptno": this.new_array[0].bankname ? "" : this.receipt_name,
+      "ISActive": true,
+      "BranchID": this.sampletest[i].branchid,
+      "ChitGroupId": this.sampletest[i].chitgroupid,
+      // "Narration": this.sampletest[i].narration,
+      "Head_Id": this.sampletest[i].headid,
+      "Other_Trans_Type": this.new_array[0].bankname ? 0 : 1,
+      "RootID": this.new_array[0].bankname ? "3" : this.sampletest[i].rootid,
+      "M_Id": this.sampletest[i].memberid,
+      "Type": "DefaultInterest",
+      "MoneyCollId":this.post_id,
+      "VoucherCount":this.newvoucher_count,
+      "VoucherCode":this.Receipt_code,
+      "CustomerBankName":this.sampletest[i].customerbankname,
+      "BankName":this.sampletest[i].bankname,
+      "BankHeadID":this.result[0].bankheadid,
+      "ChequeNo":this.sampletest[i].chequenumber,
+      "ChequeDate":this.sampletest[i].chequedate
+      }
+      ]
+      }
+      else{
+      this.cashpdata = [
+      {
+      "Amount": this.sampletest[i].amountpayable,
+        "CurrentDue":this.sampletest[i].amountreceived,
+        "B_Group":this.B_Groups[i],
+      "NPArrear":this.sampletest[i].nonprizedarrear,
+      "IsDeleted": 0,
+      "MemberID": this.sampletest[i].m_id,
+      "ReceievedBy": "admin",
+      "Series": this.new_array[0].bankname ? "CHEQUE":"BCAPP",
+      "T_Day": format(new Date(this.nedate), "dd"),
+      "T_Month": format(new Date(this.nedate), "MM"),
+      "T_Year": format(new Date(this.nedate), "yyyy"),
+      "Trans_Medium": "0",
+      "Trans_Type": "1",
+      "TransactionKey": 0,
+      "Voucher_No": this.count + 1,
+      "Voucher_Type": "C",
+      "IsAccepted": "0",
+      "AppReceiptno": this.new_array[0].bankname ? "" : this.receipt_name,
+      "ISActive": true,
+      "BranchID": this.sampletest[i].branchid,
+      "ChitGroupId": this.sampletest[i].chitgroupid,
+      // "Narration": this.sampletest[i].narration,
+      "Head_Id": this.sampletest[i].headid,
+      "Other_Trans_Type": this.new_array[0].bankname ? 0 : 1,
+      "RootID": this.new_array[0].bankname ? "3" : this.sampletest[i].rootid,
+      "M_Id": this.sampletest[i].memberid,
+      "Type": this.new_array[0].bankname ? "Cheque" : "Cash",
+      "MoneyCollId":this.post_id,
+      "VoucherCount":this.newvoucher_count,
+      "VoucherCode":this.Receipt_code,
+      "BankName":this.sampletest[i].bankname,
+      "CustomerBankName":this.sampletest[i].customerbankname,
+      "BankHeadID":this.result[0].bankheadid,
+      "ChequeNo":this.sampletest[i].chequenumber,
+      "ChequeDate":this.sampletest[i].chequedate
+      },
+      {
+      "Amount": this.sampletest[i].amountpayable,
+       "CurrentDue":this.sampletest[i].amountreceived,
+       "B_Group":this.B_Groups[i],
+      "NPArrear":this.sampletest[i].nonprizedarrear,
+      "IsDeleted": 0,
+      "MemberID": this.sampletest[i].m_id,
+      "ReceievedBy": "admin",
+      "Series": this.new_array[0].bankname ? "CHEQUE":"BCAPP",
+      "T_Day": format(new Date(this.nedate), "dd"),
+      "T_Month": format(new Date(this.nedate), "MM"),
+      "T_Year": format(new Date(this.nedate), "yyyy"),
+      "Trans_Medium": "0",
+      "Trans_Type": "1",
+      "TransactionKey": 0,
+      "Voucher_No": this.count + 1,
+      "IsAccepted": "0",
+      "Voucher_Type": "D",
+      "AppReceiptno": this.new_array[0].bankname ? "" : this.receipt_name,
+      "ISActive": true,
+      "BranchID": this.sampletest[i].branchid,
+      "ChitGroupId": this.sampletest[i].chitgroupid,
+      // "Narration": this.sampletest[i].narration,
+      "Head_Id": this.sampletest[i].headid,
+      "Other_Trans_Type": this.new_array[0].bankname ? 0 : 1,
+      "RootID": this.new_array[0].bankname ? "3" : this.sampletest[i].rootid,
+      "M_Id": this.sampletest[i].memberid,
+      "Type": this.new_array[0].bankname ? "Cheque" : "Cash",
+      "MoneyCollId":this.post_id,
+      "VoucherCount":this.newvoucher_count,
+      "VoucherCode":this.Receipt_code,
+      "BankName":this.sampletest[i].bankname,
+      "CustomerBankName":this.sampletest[i].customerbankname,
+      "BankHeadID":this.result[0].bankheadid,
+      "ChequeNo":this.sampletest[i].chequenumber,
+      "ChequeDate":this.sampletest[i].chequedate
+      },
+      {
+      "Amount": +this.sampletest[i].interest + +this.sampletest[i].otheramount,
+      "Interest":this.sampletest[i].interest,
+      "B_Group":this.B_Groups[i],
+      "OtherAmt":this.sampletest[i].otheramount,
+      "IsDeleted": 0,
+      "MemberID": this.sampletest[i].m_id,
+      "ReceievedBy": "admin",
+      "Series": this.new_array[0].bankname ? "CHEQUE":"BCAPP",
+      "T_Day": format(new Date(this.nedate), "dd"),
+      "T_Month": format(new Date(this.nedate), "MM"),
+      "T_Year": format(new Date(this.nedate), "yyyy"),
+      "Trans_Medium": "0",
+      "Trans_Type": "1",
+      "TransactionKey": 0,
+      "Voucher_No": this.count + 1,
+      "Voucher_Type": "C",
+      "IsAccepted": "0",
+      "AppReceiptno": this.new_array[0].bankname ? "" : this.receipt_name,
+      "ISActive": true,
+      "BranchID": this.sampletest[i].branchid,
+      "ChitGroupId": this.sampletest[i].chitgroupid,
+      // "Narration": this.sampletest[i].narration,
+      "Head_Id": this.sampletest[i].headid,
+      "Other_Trans_Type": this.new_array[0].bankname ? 0 : 1,
+      "RootID": this.new_array[0].bankname ? "3" : this.sampletest[i].rootid,
+      "M_Id": this.sampletest[i].memberid,
+      "Type": "DefaultInterest",
+      "MoneyCollId":this.post_id,
+      "VoucherCount":this.newvoucher_count,
+      "VoucherCode":this.Receipt_code,
+      "BankName":this.sampletest[i].bankname,
+      "CustomerBankName":this.sampletest[i].customerbankname,
+      "BankHeadID":this.result[0].bankheadid,
+      "ChequeNo":this.sampletest[i].chequenumber,
+      "ChequeDate":this.sampletest[i].chequedate
+      },
+      {
+      "Amount": +this.sampletest[i].interest + +this.sampletest[i].otheramount,
+      "Interest":this.sampletest[i].interest,
+      "B_Group":this.B_Groups[i],
+      "OtherAmt":this.sampletest[i].otheramount,
+      "IsDeleted": 0,
+      "MemberID": this.sampletest[i].m_id,
+      "ReceievedBy": "admin",
+      "Series": this.new_array[0].bankname ? "CHEQUE":"BCAPP",
+      "T_Day": format(new Date(this.nedate), "dd"),
+      "T_Month": format(new Date(this.nedate), "MM"),
+      "T_Year": format(new Date(this.nedate), "yyyy"),
+      "Trans_Medium": "0",
+      "Trans_Type": "1",
+      "TransactionKey": 0,
+      "Voucher_No": this.count + 1,
+      "Voucher_Type": "D",
+      "IsAccepted": "0",
+      "AppReceiptno": this.new_array[0].bankname ? "" : this.receipt_name,
+      "ISActive": true,
+      "BranchID": this.sampletest[i].branchid,
+      "ChitGroupId": this.sampletest[i].chitgroupid,
+      // "Narration": this.sampletest[i].narration,
+      "Head_Id": this.sampletest[i].headid,
+      "Other_Trans_Type": this.new_array[0].bankname ? 0 : 1,
+      "RootID": this.new_array[0].bankname ? "3" : this.sampletest[i].rootid,
+      "M_Id": this.sampletest[i].memberid,
+      "Type": "DefaultInterest",
+      "MoneyCollId":this.post_id,
+      "VoucherCount":this.newvoucher_count,
+      "VoucherCode":this.Receipt_code,
+      "BankName":this.sampletest[i].bankname,
+      "CustomerBankName":this.sampletest[i].customerbankname,
+      "BankHeadID":this.result[0].bankheadid,
+      "ChequeNo":this.sampletest[i].chequenumber,
+      "ChequeDate":this.sampletest[i].chequedate
+      }
+      ]
+      
+      }
+      console.log(this.cashpdata)
+      this.cashdata.push(this.cashpdata);
+      this.cashdata1 = [].concat.apply([], this.cashdata);
+      for (let i = this.cashdata1.length - 1; i >= 0; --i) {
+      if (this.cashdata1[i].Amount == "0") {
+      this.cashdata1.splice(i, 1);
+      }
+      }
+      }
+      if(this.cashdata1){
+        this.cashfunction(this.cashdata1)
+      }
+     
+      }
+      else {
+      // alert('error');
+      // loading.dismiss();
       this.dismiss();
-      this.presentToast("Session timeout, please login to continue.");
-      this.dashboardservice.logout(localStorage.getItem("col_id")).subscribe(res=>{
+      }
+      } ,(error:HttpErrorResponse)=>{
+        if(error.status ===401){    
+          this.dismiss();
+          this.presentToast("Session timeout, please login to continue.");
+          this.dashboardservice.logout(localStorage.getItem("col_id")).subscribe(res=>{
+          })
+          this.router.navigate(["/login"]);
+         }
+         else if(error.status ===400){   
+        this.dismiss();
+          this.presentToast("Session timeout / Server Error! Please login again");
+          this.dashboardservice.logout(localStorage.getItem("col_id")).subscribe(res=>{
+          })
+          this.router.navigate(["/login"]);
+       }else{
+        this.dismiss();
+        this.presentToast("Session timeout / Server Error! Please login again");
+        this.dashboardservice.logout(localStorage.getItem("col_id")).subscribe(res=>{
+        })
+        this.router.navigate(["/login"]);
+       }
       })
-      this.router.navigate(["/login"]);
-     }
-     else if(error.status ===400){   
-    this.dismiss();
-      this.presentToast("Session timeout / Server Error! Please login again");
-      this.dashboardservice.logout(localStorage.getItem("col_id")).subscribe(res=>{
+      }
+     
+    
+    
+      },(error:HttpErrorResponse)=>{
+        if(error.status ===401){    
+          this.dismiss();
+          this.presentToast("Session timeout, please login to continue.");
+          this.dashboardservice.logout(localStorage.getItem("col_id")).subscribe(res=>{
+          })
+          this.router.navigate(["/login"]);
+         }
+         else if(error.status ===400){   
+        this.dismiss();
+          this.presentToast("Session timeout / Server Error! Please login again");
+          this.dashboardservice.logout(localStorage.getItem("col_id")).subscribe(res=>{
+          })
+          this.router.navigate(["/login"]);
+       }else{
+        this.dismiss();
+        this.presentToast("Session timeout / Server Error! Please login again");
+        this.dashboardservice.logout(localStorage.getItem("col_id")).subscribe(res=>{
+        })
+        this.router.navigate(["/login"]);
+       }
       })
-      this.router.navigate(["/login"]);
-   }else{
-    this.dismiss();
-    this.presentToast("Session timeout / Server Error! Please login again");
-    this.dashboardservice.logout(localStorage.getItem("col_id")).subscribe(res=>{
-    })
-    this.router.navigate(["/login"]);
-   }
-  })
+    
   }
  
-
-
-  },(error:HttpErrorResponse)=>{
-    if(error.status ===401){    
-      this.dismiss();
-      this.presentToast("Session timeout, please login to continue.");
-      this.dashboardservice.logout(localStorage.getItem("col_id")).subscribe(res=>{
-      })
-      this.router.navigate(["/login"]);
-     }
-     else if(error.status ===400){   
-    this.dismiss();
-      this.presentToast("Session timeout / Server Error! Please login again");
-      this.dashboardservice.logout(localStorage.getItem("col_id")).subscribe(res=>{
-      })
-      this.router.navigate(["/login"]);
-   }else{
-    this.dismiss();
-    this.presentToast("Session timeout / Server Error! Please login again");
-    this.dashboardservice.logout(localStorage.getItem("col_id")).subscribe(res=>{
-    })
-    this.router.navigate(["/login"]);
-   }
-  })
-
 }
 
 cashfunction(data:any){
@@ -987,7 +993,8 @@ cashfunction(data:any){
   }
     }
     ,(error:HttpErrorResponse)=>{
-     if(error.status ===400){           
+     if(error.status ===400){      
+      this.dismiss();     
       this.presentToast("Session timeout / Server Error! Please login again");
       this.dashboardservice.logout(localStorage.getItem("col_id")).subscribe(res=>{
       })
@@ -997,13 +1004,15 @@ cashfunction(data:any){
   })
     }
     ,(error:HttpErrorResponse)=>{
-      if(error.status ===401){           
+      if(error.status ===401){     
+        this.dismiss();      
         this.presentToast("Session timeout, please login to continue.");
         this.dashboardservice.logout(localStorage.getItem("col_id")).subscribe(res=>{
         })
         this.router.navigate(["/login"]);
      }
-     else if(error.status ===400){           
+     else if(error.status ===400){  
+      this.dismiss();         
       this.presentToast("Session timeout / Server Error! Please login again");
       this.dashboardservice.logout(localStorage.getItem("col_id")).subscribe(res=>{
       })

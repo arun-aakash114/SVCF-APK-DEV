@@ -122,7 +122,7 @@ offapp(){
     backbutton() {
       this.platform.backButton.subscribeWithPriority(1000,async ()=>{
        
-        if(window.location.pathname == '/dashboard' || window.location.pathname == '' ||  window.location.pathname=='/subscribe-list'||  window.location.pathname=='/selectapp'){
+        if(window.location.pathname == '/dashboard' || window.location.pathname == ''){
           // if (new Date().getTime() - this.lastTimeBackPress < this.timePeriodToExit) {
            
           //   navigator['app'].exitApp(); 
@@ -140,40 +140,33 @@ offapp(){
        this.backbutton1();
          
          
-        }else if(window.location.pathname=="/subscribe-list/payment-success" || window.location.pathname=="/cashprint"){
-            this.presentToast("backbutton will not work during payment")
         }
-        else if(window.location.pathname=="/subscribe-list/subscriber-payment" || window.location.pathname=="/subscribe-list/subscriber-recepit" || window.location.pathname=="/subscribe-list/all-chits" || window.location.pathname=="/subscribe-list/person-detail"  
-        || window.location.pathname=="/subscribe-list/payforothers"){
-         this.router.navigate(['/subscribe-list'])
-        }else if(window.location.pathname=="/subscribe-list/show-chits"){
-          this.router.navigate(['/subscribe-list/all-chits'])
-        }else if(window.location.pathname=="/subscribe-list/payeccess-amount"){
-          if(localStorage.getItem("excesspage")=="subscribelist"){
-            this.router.navigate(["/subscribe-list"])
-          }else{
-            this.router.navigate(["/subscribe-list/payforothers"]);
-          }
-        }
-        else if(window.location.pathname=="/subscribe-list/newcustomer-payment"){
-          this.router.navigate(['/subscribe-list/payforothers'])
-        }
+       
         else if(window.location.pathname=="/forgot-password" || window.location.pathname=="/reset-password" || window.location.pathname=="/termscondition"){
           this.router.navigate(['/login'])
         }
         else if(window.location.pathname=="/login"){
-          this.router.navigate(['/selectapp'])
+          navigator['app'].exitApp();
         }else if(window.location.pathname=="/payment" || window.location.pathname=="/receipthistory"){
-          this.router.navigate(['/dashboard'])
-        }else if(window.location.pathname=="/payment/cash"){
-          this.router.navigate(['/payment'])
+          if(this.router.url.split('?')[0]=="/payment/cash"){
+            this.router.navigateByUrl('payment')
+          }else {
+            this.router.navigate(['/dashboard'])
+          }
+          
+        }
+        else if(window.location.pathname=="/payment/cash"){
+          this.router.navigateByUrl('/payment')
         }else if(window.location.pathname=="/payment/cashpay"){
-          this.router.navigate(['/cash'])
-        } else if(window.location.pathname=="/otherbranch"){
+          this.router.navigateByUrl('/payment/cash')
+        }
+         else if(window.location.pathname=="/otherbranch"){
           this.router.navigate(['/dashboard'])
 
         } else if(window.location.pathname=="/branchmembers"){
           this.router.navigate(['/otherbranch'])
+        } else if(window.location.pathname=="/cashprint"){
+          this.router.navigate(['/dashboard'])
         }
   
       })

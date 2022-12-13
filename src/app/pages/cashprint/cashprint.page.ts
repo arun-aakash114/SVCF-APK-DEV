@@ -27,7 +27,6 @@ constructor(private platform:Platform,public loadingController: LoadingControlle
 }
 
 ionViewWillEnter(){
- 
   let token=localStorage.getItem("tokens");
   this.route.queryParams.subscribe(params => {
 this.cash_print_preview = JSON.parse(params.state)
