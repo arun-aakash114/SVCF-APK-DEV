@@ -26,7 +26,7 @@ export class OtherbranchesPage implements OnInit {
     this.moneycoll_name=localStorage.getItem("col_name")
     let token=localStorage.getItem("tokens");
     this.present();
-    this.dashboardservice.otherbranches().subscribe(res => {
+    this.dashboardservice.otherbranches(token).subscribe(res => {
     this.dismiss();
     this.details = res;
     console.log(this.details)

@@ -18,10 +18,10 @@ export class DashboardService {
   tokenexpiry(token){
     return this.http.get('BalanceExpiration?token='+token)
   }
-  otherbranches(){
-    return this.http.get('branchdetail')
+  otherbranches(token){
+    return this.http.get('branchdetail?token='+token)
   }
-  branchmember(id){
-    return this.http.get('membertogroupmaster/Branchid?branchid='+id)
+  branchmember(id,val,token){
+    return this.http.get('membertogroupmaster/Branchid?branchid='+id+'&membername='+val+'&token='+token)
   }
 }

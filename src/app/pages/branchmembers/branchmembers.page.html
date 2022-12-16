@@ -13,11 +13,12 @@
     </ion-col>
     </ion-row>
     <div class="search">
-      <ion-searchbar placeholder="search" [(ngModel)]="terms" 
+      <ion-searchbar placeholder="search" [(ngModel)]="terms" (ionChange)="search()"
       ></ion-searchbar>
     </div>
   </section>
-  <ion-card class="card_bg" *ngFor="let v of details |filter:terms">
+  <div *ngIf="this.details.length!==0">
+  <ion-card class="card_bg" *ngFor="let v of details;">
   <ion-item (click)="goto(v)">
   <ion-label class="ion-text-wrap">
   <h3 class="id">{{ v.GrpMemberID }}</h3>
@@ -26,6 +27,7 @@
   <ion-label class="chit">No. of chits ({{v.chitcount}})</ion-label>
   </ion-item>
   </ion-card>
+</div>
   <!-- <p *ngIf= "terms == ''">dsf</p> -->
-  <div style="height: 250px;text-align: center;margin-top: 50%;" *ngIf="(details | filter: terms).length === 0">No Results Found</div>
+  <div style="height: 250px;text-align: center;margin-top: 50%;" *ngIf="details.length === 0">No Results Found</div>
   </ion-content>

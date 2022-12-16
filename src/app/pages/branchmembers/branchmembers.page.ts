@@ -30,32 +30,33 @@ isLoading = false;
   ngOnInit() {
   }
   ionViewWillEnter(){
-    this.moneycoll_name=localStorage.getItem("col_name")
-    let token=localStorage.getItem("tokens");
-    this.user_details=JSON.parse(localStorage.getItem("brdetails"));
-console.log(this.user_details)
-    this.present();
-    this.dashboardservice.branchmember(this.user_details.Head_Id).subscribe(res => {
-    this.dismiss();
-    this.details = res;
-     this.filterItems= this.details;
-    console.log(this.details)
-    },(error:HttpErrorResponse)=>{
-       if(error.status ===401){    
-          this.dismiss();       
-         this.presentToast("Session timeout, please login to continue.");
+ 
+    }
+
+    search(){
+      this.moneycoll_name=localStorage.getItem("col_name")
+      let token=localStorage.getItem("tokens");
+      this.user_details=JSON.parse(localStorage.getItem("brdetails"));
+      this.dashboardservice.branchmember(this.user_details.Head_Id,this.terms,token).subscribe(res => {
+      this.details = res;
+       this.filterItems= this.details;
+      console.log(this.details)
+      },(error:HttpErrorResponse)=>{
+         if(error.status ===401){    
+            this.dismiss();       
+           this.presentToast("Session timeout, please login to continue.");
+           this.dashboardservice.logout(localStorage.getItem("col_id")).subscribe(res=>{
+         })
+           this.router.navigate(["/login"]);
+        }
+        else if(error.status ===400){  
+         this.dismiss();         
+         this.presentToast("Session timeout / Server Error! Please login again");
          this.dashboardservice.logout(localStorage.getItem("col_id")).subscribe(res=>{
-       })
+         })
          this.router.navigate(["/login"]);
       }
-      else if(error.status ===400){  
-       this.dismiss();         
-       this.presentToast("Session timeout / Server Error! Please login again");
-       this.dashboardservice.logout(localStorage.getItem("col_id")).subscribe(res=>{
        })
-       this.router.navigate(["/login"]);
-    }
-     })
     }
     goto(s) {
     this.user = s;
