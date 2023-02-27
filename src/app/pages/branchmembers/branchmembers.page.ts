@@ -22,6 +22,7 @@ login_res_data:any;
 terms:"";
 items_containers:any;
 isLoading = false;
+searchtofind:boolean
 
    filterItems:any;
   constructor(private platform:Platform,private router: Router,public alertController: AlertController,  public dashboardservice: DashboardService, private route: ActivatedRoute,public loadingController: LoadingController,
@@ -30,10 +31,11 @@ isLoading = false;
   ngOnInit() {
   }
   ionViewWillEnter(){
- 
+    this.searchtofind = true
     }
 
     search(){
+      this.searchtofind = false
       this.moneycoll_name=localStorage.getItem("col_name")
       let token=localStorage.getItem("tokens");
       this.user_details=JSON.parse(localStorage.getItem("brdetails"));

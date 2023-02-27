@@ -16,8 +16,11 @@ export class PaymentService {
 cash_details(branch,token){
   return this.http.post('ReceiptTable/AddList?token='+token,branch)
 }
-post_vouchercash(cashvoucher,token):Observable<any>{
-  return this.http.post('VoucherCreditDebit/AddList?token='+token,cashvoucher)
+verify_collector(id){
+  return this.http.get('verifyblock/moneycollid?moneycollid='+id)
+}
+post_vouchercash(cashvoucher,token,numb):Observable<any>{
+  return this.http.post('VoucherCreditDebit/AddList?token='+token+'&mobileno='+numb,cashvoucher)
 
 }
 post_defaultvouchercash(defaultvoucher,token){

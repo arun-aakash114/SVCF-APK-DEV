@@ -18,6 +18,7 @@ import { MaterialModule } from  './material/material.module';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { LocalNotifications } from '@ionic-native/local-notifications/ngx';
 import { InAppBrowser } from '@awesome-cordova-plugins/in-app-browser/ngx';
+import { Device } from '@ionic-native/device/ngx';
 @NgModule({
   declarations: [AppComponent],
   entryComponents: [],
@@ -29,7 +30,6 @@ import { InAppBrowser } from '@awesome-cordova-plugins/in-app-browser/ngx';
      FormsModule,
      HttpClientModule,
      BrowserAnimationsModule,
-    
     ],
      
   providers: [
@@ -40,6 +40,7 @@ import { InAppBrowser } from '@awesome-cordova-plugins/in-app-browser/ngx';
     Network,
     Dialogs,WebIntent,
     InAppBrowser,
+    Device,
     SocialSharing,
     LocalNotifications,
     

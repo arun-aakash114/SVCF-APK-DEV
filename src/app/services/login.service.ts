@@ -8,8 +8,8 @@ import { environment } from '../../environments/environment';
 export class LoginService {
 
   constructor(private http: HttpClient) { }
-  user_authentication(username,password){
-    return this.http.get('https://emp.sreevisalam.com/SVCF_Service/Service1.svc/'+'moneycollectorlogin/username?username='+username +'&Password=' +password)
+  user_authentication(username,password,id){
+    return this.http.get('https://emp.sreevisalam.com/SVCF_Service/Service1.svc/'+'moneycollectorlogin/username?username='+username +'&Password=' +password +'&Deviceid=' +id)
 
   }
 }

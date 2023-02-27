@@ -81,6 +81,7 @@ B_Groups: any=[];
   todayvalue: any;
   userdata: any=[];
   total1: boolean;
+  mobileForm: FormGroup;
 constructor(private fb: FormBuilder,public dashboardservice:DashboardService,private toast: Toast,private http: HttpClient, public loadingController: LoadingController, private router: Router, private route: ActivatedRoute, public paymentservice: PaymentService) {
 this.route.queryParams.subscribe(params => {
 if (this.router.getCurrentNavigation().extras.state) {
@@ -264,6 +265,10 @@ for (let i=0;i<this.result.length;i++){
   }
   buildForm1() {
   const controlArray = this.submitForm.get('formArrayName') as FormArray;
+  this.mobileForm = this.fb.group({
+    mobilenumber: ['', [Validators.required,Validators.pattern("[0-9]{10}")]],
+    // mobile: ['', [Validators.required, Validators.maxLength(10),Validators.pattern("[0-9]{10}")]],
+    })
   Object.keys(this.result).forEach((i) => {
   controlArray.push(
   this.fb.group({
@@ -279,13 +284,13 @@ for (let i=0;i<this.result.length;i++){
   chitgroupid: new FormControl(this.result[i].chitgroupid, Validators.required),
   agreement: new FormControl(this.result[i].agreement, Validators.required),
   installment: new FormControl(this.result[i].installment, Validators.required),
-  amountreceived: new FormControl(this.new_array[i].amountreceived),
-    amountpayable: new FormControl(this.new_array[i].amountpayable),
+  amountreceived: new FormControl(Number(this.new_array[i].amountreceived).toLocaleString('en-IN')),
+    amountpayable: new FormControl(Number(this.new_array[i].amountpayable).toLocaleString('en-IN')),
 
   prizedarrear: new FormControl(this.new_array[i].prizedarrear),
   nonprizedarrear: new FormControl(this.new_array[i].nonprizedarrear),
   interest: new FormControl(this.result[i].interest),
-  otheramount: new FormControl(this.result[i].otheramount),
+  otheramount: new FormControl(Number(this.result[i].otheramount).toLocaleString('en-IN')),
   bankname : new FormControl((this.result[i].bankname ? this.result[i].bankname:'')),
   customerbankname : new FormControl((this.result[i].customerbankname ? this.result[i].customerbankname:'')),
   chequenumber : new FormControl((this.result[i].chequenumber ? this.result[i].chequenumber:'')),
@@ -327,11 +332,13 @@ submitfunction(s){
   this.present()
  this.sampletest = s.formArrayName;
   console.log(this.sampletest)
-  if(this.sampletest[0].mobilenumber == ""){
+  var pattern=new RegExp(('[0-9]{10}') ||('[0-9]{11}'));
+  if(this.mobileForm['value']['mobilenumber'] == ""){
     this.dismiss();
     this.presentToast("Please enter Mobile Number");
   }
-  else {
+  else if(pattern.test(this.mobileForm['value']['mobilenumber']) == true && this.mobileForm.valid){
+    // console.log(pattern.test(this.sampletest[0].mobilenumber))
     this.paymentservice.cash_details(this.sampledata1,localStorage.getItem("tokens")).subscribe(res => {
       console.log(res);
       this.receipt_res = res;
@@ -926,127 +933,164 @@ submitfunction(s){
        }
       })
     
+  } else {
+    this.dismiss();
+    this.presentToast("Enter Valid Mobile Number");
+
   }
  
 }
 
 cashfunction(data:any){
-  if(this.new_array[0].bankname){
-    this.paymentservice.post_vouchercash(data,localStorage.getItem("tokens")).subscribe((res:Observable<any>) => {
-      if(res){
-        this.voucher_res = res;
+  this.paymentservice.verify_collector(localStorage.getItem("col_id")).subscribe((res) => {
+    if(res == 0){
+      if(this.new_array[0].bankname){
+
+        this.paymentservice.post_vouchercash(data,localStorage.getItem("tokens"),Number(this.mobileForm['value']['mobilenumber'])).subscribe((res:Observable<any>) => {
+          if(res){
+            this.voucher_res = res;
+            this.dismiss();
+        this.presentToast("Cheque Data submited successfully")
+        this.router.navigate(['/dashboard'])
+          }
+      },(error:HttpErrorResponse)=>{
+        if(error.status ===401){    
+          this.dismiss();
+          this.presentToast("Session timeout, please login to continue.");
+          this.dashboardservice.logout(localStorage.getItem("col_id")).subscribe(res=>{
+          })
+          this.router.navigate(["/login"]);
+         }
+         else if(error.status ===400){   
         this.dismiss();
-    this.presentToast("Cheque Data submited successfully")
-    this.router.navigate(['/dashboard'])
+          this.presentToast("Session timeout / Server Error! Please login again");
+          this.dashboardservice.logout(localStorage.getItem("col_id")).subscribe(res=>{
+          })
+          this.router.navigate(["/login"]);
+       }else{
+        this.dismiss();
+        this.presentToast("Session timeout / Server Error! Please login again");
+        this.dashboardservice.logout(localStorage.getItem("col_id")).subscribe(res=>{
+        })
+        this.router.navigate(["/login"]);
+       }
+      })
+        
+      }else {
+        this.paymentservice.post_vouchercash(data,localStorage.getItem("tokens"),Number(this.mobileForm['value']['mobilenumber'])).subscribe((res:Observable<any>) => {
+          if(res){
+            this.voucher_res = res;
+            this.dismiss();
+            this.presentToast('sucessfully updated');
+             let navigationExtras: NavigationExtras = {
+              queryParams: { state:JSON.stringify(this.voucher_res )},
+              // skipLocationChange: true
+              };
+              // JSON.stringify(this.voucher_res)
+              // this.cash_print_preview = JSON.parse(this.voucher_res)
+      console.log(this.cash_print_preview)
+      this.api_id=[]
+      let token=localStorage.getItem("tokens");
+      for(let i=0;i<this.voucher_res?.length;i++){
+        this.api_id.push(this.voucher_res[i]['ID']);
+        }
+         this.paymentservice.print_details(this.api_id,token).subscribe(res=>{
+          console.log(res)
+        this.print_cash_page=res;
+        this.paymentservice.mobdetails(this.mobileForm['value']['mobilenumber'],this.print_cash_page).subscribe(res=>{
+          console.log(res)
+      if(res=="OK"){
+        this.presentToast("Receipt SMS successfully send to the mobile number.")
+        this.router.navigate(['/cashprint'],navigationExtras)
+      }else{
+        this.presentToast("Receipt SMS not send to the mobile number.")
       }
-  },(error:HttpErrorResponse)=>{
-    if(error.status ===401){    
-      this.dismiss();
-      this.presentToast("Session timeout, please login to continue.");
-      this.dashboardservice.logout(localStorage.getItem("col_id")).subscribe(res=>{
+        }
+        ,(error:HttpErrorResponse)=>{
+         if(error.status ===400){      
+          this.dismiss();     
+          this.presentToast("Session timeout / Server Error! Please login again");
+          this.dashboardservice.logout(localStorage.getItem("col_id")).subscribe(res=>{
+          })
+          this.router.navigate(["/login"]);
+       }
+       
       })
-      this.router.navigate(["/login"]);
-     }
-     else if(error.status ===400){   
-    this.dismiss();
-      this.presentToast("Session timeout / Server Error! Please login again");
-      this.dashboardservice.logout(localStorage.getItem("col_id")).subscribe(res=>{
-      })
-      this.router.navigate(["/login"]);
-   }else{
-    this.dismiss();
-    this.presentToast("Session timeout / Server Error! Please login again");
-    this.dashboardservice.logout(localStorage.getItem("col_id")).subscribe(res=>{
-    })
-    this.router.navigate(["/login"]);
-   }
-  })
-    
-  }else {
-    this.paymentservice.post_vouchercash(data,localStorage.getItem("tokens")).subscribe((res:Observable<any>) => {
-      if(res){
-        this.voucher_res = res;
+        }
+        ,(error:HttpErrorResponse)=>{
+          if(error.status ===401){     
+            this.dismiss();      
+            this.presentToast("Session timeout, please login to continue.");
+            this.dashboardservice.logout(localStorage.getItem("col_id")).subscribe(res=>{
+            })
+            this.router.navigate(["/login"]);
+         }
+         else if(error.status ===400){  
+          this.dismiss();         
+          this.presentToast("Session timeout / Server Error! Please login again");
+          this.dashboardservice.logout(localStorage.getItem("col_id")).subscribe(res=>{
+          })
+          this.router.navigate(["/login"]);
+       }
+       
+        }
+        
+        )
+            
+          }
+      },(error:HttpErrorResponse)=>{
+        if(error.status ===401){    
+          this.dismiss();
+          this.presentToast("Session timeout, please login to continue.");
+          this.dashboardservice.logout(localStorage.getItem("col_id")).subscribe(res=>{
+          })
+          this.router.navigate(["/login"]);
+         }
+         else if(error.status ===400){   
         this.dismiss();
-        this.presentToast('sucessfully updated');
-         let navigationExtras: NavigationExtras = {
-          queryParams: { state:JSON.stringify(this.voucher_res )},
-          // skipLocationChange: true
-          };
-          // JSON.stringify(this.voucher_res)
-          // this.cash_print_preview = JSON.parse(this.voucher_res)
-  console.log(this.cash_print_preview)
-  this.api_id=[]
-  let token=localStorage.getItem("tokens");
-  for(let i=0;i<this.voucher_res?.length;i++){
-    this.api_id.push(this.voucher_res[i]['ID']);
-    }
-     this.paymentservice.print_details(this.api_id,token).subscribe(res=>{
-      console.log(res)
-    this.print_cash_page=res;
-    this.paymentservice.mobdetails(this.sampletest[0].mobilenumber,this.print_cash_page).subscribe(res=>{
-      console.log(res)
-  if(res=="OK"){
-    this.presentToast("Receipt SMS successfully send to the mobile number.")
-    this.router.navigate(['/cashprint'],navigationExtras)
-  }else{
-    this.presentToast("Receipt SMS not send to the mobile number.")
-  }
-    }
-    ,(error:HttpErrorResponse)=>{
-     if(error.status ===400){      
-      this.dismiss();     
-      this.presentToast("Session timeout / Server Error! Please login again");
+          this.presentToast("Session timeout / Server Error! Please login again");
+          this.dashboardservice.logout(localStorage.getItem("col_id")).subscribe(res=>{
+          })
+          this.router.navigate(["/login"]);
+       }else{
+        this.dismiss();
+        this.presentToast("Session timeout / Server Error! Please login again");
+        this.dashboardservice.logout(localStorage.getItem("col_id")).subscribe(res=>{
+        })
+        this.router.navigate(["/login"]);
+       }
+      })
+      }
+    }else if(res==1){
+      this.dismiss();
+      this.presentToast("Sorry you have been blocked,Please contact admin");
       this.dashboardservice.logout(localStorage.getItem("col_id")).subscribe(res=>{
       })
       this.router.navigate(["/login"]);
-   }
-   
-  })
     }
-    ,(error:HttpErrorResponse)=>{
-      if(error.status ===401){     
-        this.dismiss();      
+     },(error:HttpErrorResponse)=>{
+      if(error.status ===401){    
+        this.dismiss();
         this.presentToast("Session timeout, please login to continue.");
         this.dashboardservice.logout(localStorage.getItem("col_id")).subscribe(res=>{
         })
         this.router.navigate(["/login"]);
-     }
-     else if(error.status ===400){  
-      this.dismiss();         
-      this.presentToast("Session timeout / Server Error! Please login again");
-      this.dashboardservice.logout(localStorage.getItem("col_id")).subscribe(res=>{
-      })
-      this.router.navigate(["/login"]);
-   }
-   
-    }
-    
-    )
-        
-      }
-  },(error:HttpErrorResponse)=>{
-    if(error.status ===401){    
+       }
+       else if(error.status ===400){   
       this.dismiss();
-      this.presentToast("Session timeout, please login to continue.");
-      this.dashboardservice.logout(localStorage.getItem("col_id")).subscribe(res=>{
-      })
-      this.router.navigate(["/login"]);
-     }
-     else if(error.status ===400){   
-    this.dismiss();
+        this.presentToast("Session timeout / Server Error! Please login again");
+        this.dashboardservice.logout(localStorage.getItem("col_id")).subscribe(res=>{
+        })
+        this.router.navigate(["/login"]);
+     }else{
+      this.dismiss();
       this.presentToast("Session timeout / Server Error! Please login again");
       this.dashboardservice.logout(localStorage.getItem("col_id")).subscribe(res=>{
       })
       this.router.navigate(["/login"]);
-   }else{
-    this.dismiss();
-    this.presentToast("Session timeout / Server Error! Please login again");
-    this.dashboardservice.logout(localStorage.getItem("col_id")).subscribe(res=>{
-    })
-    this.router.navigate(["/login"]);
-   }
-  })
-  }
+     }
+     })
+
 
 }
 

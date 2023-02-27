@@ -75,11 +75,11 @@
               <ion-input formControlName="chequedate" readonly>
               </ion-input>
               </ion-item>
-        <ion-item>
+        <!-- <ion-item>
           <ion-label position="stacked">Mobile Number</ion-label>
           <ion-input formControlName="mobilenumber"  maxlength="10" pattern="[0-9]{10}">
           </ion-input>
-          </ion-item>
+          </ion-item> -->
         <!-- <ion-item>
         <ion-label position="stacked">
         Write Narrations
@@ -103,6 +103,20 @@
   </form>
   <p class="grand_total">Grand Total<span>₹ {{grandtotal1}}</span>
 </p>
+<form [formGroup]="mobileForm" class="payment_form" autocomplete="off">
+  <ion-list>
+    <ion-item>
+      <ion-label position="stacked">Mobile Number</ion-label>
+      <ion-input formControlName="mobilenumber"  type="text" minlength="10" maxlength="11"
+        ></ion-input>
+    </ion-item>
+    <!-- <ion-item lines="full">
+      <ion-label position="floating" >Enter mobile number</ion-label>
+      <ion-input formControlName="mobile" type="number" ></ion-input>
+  </ion-item > -->
+  </ion-list>
+
+</form>
 <ion-button type="submit" expand="block" (click)="submitfunction(submitForm.value)" class="btn">Submit </ion-button>
 </div>
 </ion-content>

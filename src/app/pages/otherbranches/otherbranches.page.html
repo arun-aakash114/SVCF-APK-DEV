@@ -20,10 +20,10 @@
   <ion-card class="card_bg" *ngFor="let v of details |filter:terms">
   <ion-item (click)="goto(v)">
   <ion-label class="ion-text-wrap">
-  <h3 class="id">{{ v.B_Head }}</h3>
+  <!-- <h3 class="id">{{ v.B_Head }}</h3> -->
   <h3 class="name"> {{ v.B_Name }}</h3>
   </ion-label>
-  <ion-label class="chit">Email:({{v.B_EMail}})</ion-label>
+  <!-- <ion-label class="chit">Email:({{v.B_EMail}})</ion-label> -->
   </ion-item>
   </ion-card>
   <!-- <p *ngIf= "terms == ''">dsf</p> -->

@@ -7,6 +7,7 @@ import { CommonApiService } from 'src/app/Login/common-api.service';
 import { AlertController, LoadingController, Platform, ToastController } from '@ionic/angular';
 import { Observable } from 'rxjs/Rx';
 import { LoginService } from '../../services/login.service';
+import { Device } from '@ionic-native/device/ngx';
 @Component({
   selector: 'app-login',
   templateUrl: './login.page.html',
@@ -29,7 +30,7 @@ export class LoginPage implements OnInit {
   coll_name: any;
   isLoading: boolean;
   constructor(private fb:FormBuilder,private network:Network,private dialogs:Dialogs,private router:Router, public commonserv: CommonApiService,public toastController: ToastController,
-    private platform: Platform,public alertController:AlertController,public loadingController: LoadingController,public loginservice: LoginService) { 
+    private platform: Platform,public alertController:AlertController,public loadingController: LoadingController,public loginservice: LoginService,private device:Device) { 
     this.loginForm = this.fb.group({
       name: ['', [Validators.required,Validators.pattern(/^\S*$/)]],
       password: ['', [Validators.required,Validators.pattern(/^\S*$/)]],
@@ -63,7 +64,7 @@ export class LoginPage implements OnInit {
       this.presentToast('Please Enter Valid Credentials');
       }
       else {
-      this.loginservice.user_authentication(this.username, this.password).subscribe(res => {
+      this.loginservice.user_authentication(this.username,this.password,this.device.uuid).subscribe(res => {
           if(res['length'] == 0){
         //alert('Enter valid credential')
         this.presentToast('Please enter valid credentials');
@@ -77,7 +78,8 @@ export class LoginPage implements OnInit {
                 this.presentToast('You Account is blocked, please contact Admin');
               }
               else if(res[0]['IsLoggedIn']=="1"){
-                this.presentToast('Your Account is already logged in with another device')
+                this.presentToast('Your Account is already logged in with another device,Please logout that device before login here')
+
               }
               else{
                 this.user_details = res;

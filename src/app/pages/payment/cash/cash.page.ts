@@ -99,8 +99,8 @@ chitgroupid: new FormControl(this.i_details[i].chitgroupid, Validators.required)
 installment: new FormControl(this.i_details[i].instno, Validators.required),
 agreement: new FormControl(this.i_details[i].agreementno, Validators.required),
 amountreceived: new FormControl(this.i_details[i].CurrentDueAmount),
-prizedarrear: new FormControl(this.i_details[i].PrizedArrear,Validators.required),
-nonprizedarrear: new FormControl(this.i_details[i].NonPrizedArrear,Validators.required),
+prizedarrear: new FormControl(Number(this.i_details[i].PrizedArrear).toLocaleString('en-IN'),Validators.required),
+nonprizedarrear: new FormControl(Number(this.i_details[i].NonPrizedArrear).toLocaleString('en-IN'),Validators.required),
 interest: new FormControl('', Validators.compose([
 
 Validators.pattern('[. , 0-9 ]*')
@@ -109,7 +109,7 @@ otheramount: new FormControl('', Validators.compose([
 Validators.pattern('[. , 0-9 ]*')
 ])),
 amountpayable: new FormControl('', Validators.compose([
-Validators.required,Validators.pattern('^[1-9][. , 0-9]*$')
+Validators.pattern('^[1-9][. , 0-9]*$')
 ])),
 bankname: new FormControl(''),
 customerbankname: new FormControl(''),
@@ -120,7 +120,6 @@ chequedate: new FormControl('')
 )
   }
   else{
-    
     controlArray.push(
 this.fb.group({
 branchprefix: new FormControl(this.i_details[i].BranchPrefix, Validators.required),
@@ -136,8 +135,8 @@ chitgroupid: new FormControl(this.i_details[i].chitgroupid, Validators.required)
 installment: new FormControl(this.i_details[i].instno, Validators.required),
 agreement: new FormControl(this.i_details[i].agreementno, Validators.required),
 amountreceived: new FormControl(this.i_details[i].CurrentDueAmount),
-prizedarrear: new FormControl(this.i_details[i].PrizedArrear,Validators.required),
-nonprizedarrear: new FormControl(this.i_details[i].NonPrizedArrear,Validators.required),
+prizedarrear: new FormControl(Number(this.i_details[i].PrizedArrear).toLocaleString('en-IN'),Validators.required),
+nonprizedarrear: new FormControl(Number(this.i_details[i].NonPrizedArrear).toLocaleString('en-IN'),Validators.required),
 interest: new FormControl('', Validators.compose([
 
 Validators.pattern('[. , 0-9 ]*')
