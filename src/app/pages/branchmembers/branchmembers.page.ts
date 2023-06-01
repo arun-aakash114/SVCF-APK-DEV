@@ -25,6 +25,7 @@ isLoading = false;
 searchtofind:boolean
 
    filterItems:any;
+  enableclear = false;
   constructor(private platform:Platform,private router: Router,public alertController: AlertController,  public dashboardservice: DashboardService, private route: ActivatedRoute,public loadingController: LoadingController,
     public toastController: ToastController) { }
 
@@ -33,7 +34,23 @@ searchtofind:boolean
   ionViewWillEnter(){
     this.searchtofind = true
     }
-
+    getApi(){
+      console.log("wroking")
+      this.enableclear=true
+      if(this.terms==""){
+         this.enableclear=false
+         this.details=[]
+         this.searchtofind = true
+      }
+   }
+   
+   clear(){
+      this.terms=""
+      this.enableclear=false
+      this.searchtofind = true
+      this.details=[]
+      // this.search();
+   }
     search(){
       this.searchtofind = false
       this.moneycoll_name=localStorage.getItem("col_name")

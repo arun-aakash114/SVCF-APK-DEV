@@ -37,9 +37,8 @@ export class AppComponent {
 
    this.initializeApp();
    if(localStorage.getItem("col_id")){
-this.service.tokenexpiry(localStorage.getItem("tokens")).subscribe(res=>{
-  let time=res
- if(time>300){
+this.service.tokenexpiry(localStorage.getItem("tokens")).subscribe((res:number)=>{
+ if(res>300){
   this.router.navigate(['/dashboard'])
  }else {
    this.router.navigate(['/login'])

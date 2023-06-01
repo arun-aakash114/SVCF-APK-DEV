@@ -12,6 +12,10 @@ export class DashboardService {
     return this.http.get('membertogroupmasterMid/MId?Mid='+mem_id+'&Token='+token);
 
   }
+  user_detailssearch(mem_id,token,data){
+    return this.http.get('membertogroupmastersearch/Branchid?branchid='+mem_id+'&membername='+data+'&token='+token);
+
+  }
   logout(id){
     return this.http.get('UpdateLogoutStatus?id='+id)
   }

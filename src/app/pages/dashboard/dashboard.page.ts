@@ -19,10 +19,11 @@ moneycoll_id: any;
 moneycoll_name: any;
 login_res_data:any;
 terms:"";
+enableclear=false;
 items_containers:any;
 isLoading = false;
+filterItems:any;
 
-   filterItems:any;
 constructor(private platform:Platform,private router: Router,public alertController: AlertController,  public dashboardservice: DashboardService, private route: ActivatedRoute,public loadingController: LoadingController,
    public toastController: ToastController) {
 
@@ -62,6 +63,51 @@ console.log(this.details)
 }
  })
 }
+getApi(){
+   console.log("wroking")
+   this.enableclear=true
+   if(this.terms==""){
+      console.log("empty")
+   this.enableclear=false
+      this.ionViewWillEnter();
+   }
+}
+
+clear(){
+   this.terms=""
+   this.enableclear=false
+   this.ionViewWillEnter();
+}
+search(){
+   this.moneycoll_name=localStorage.getItem("col_name")
+   this.moneycoll_id = localStorage.getItem("col_id");
+   console.log(this.moneycoll_id)
+   let token=localStorage.getItem("tokens");
+   this.present();
+   this.dashboardservice.user_detailssearch(this.moneycoll_id,token,this.terms).subscribe(res => {
+   this.dismiss();
+   this.details = res;
+    this.filterItems= this.details;
+   console.log(this.details)
+   },(error:HttpErrorResponse)=>{
+      if(error.status ===401){    
+         this.dismiss();       
+        this.presentToast("Session timeout, please login to continue.");
+        this.dashboardservice.logout(localStorage.getItem("col_id")).subscribe(res=>{
+      })
+        this.router.navigate(["/login"]);
+     }
+     else if(error.status ===400){  
+      this.dismiss();         
+      this.presentToast("Session timeout / Server Error! Please login again");
+      this.dashboardservice.logout(localStorage.getItem("col_id")).subscribe(res=>{
+      })
+      this.router.navigate(["/login"]);
+   }
+    })
+}
+
+
 goto(s) {
 this.user = s;
 localStorage.setItem("user2",JSON.stringify(this.user));

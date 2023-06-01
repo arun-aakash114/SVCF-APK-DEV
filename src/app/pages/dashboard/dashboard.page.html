@@ -16,11 +16,18 @@
   <ion-row><ion-col><ion-button class="total_chits" (click)="history()">History</ion-button></ion-col>
     <ion-col><ion-button class="total_chits" (click)="Otherbr()">Other Branches</ion-button></ion-col></ion-row>
   <div class="search">
-    <ion-searchbar placeholder="search" [(ngModel)]="terms" 
-    ></ion-searchbar>
+    <ion-grid>
+      <ion-row>
+        <ion-col size="7">
+    <ion-searchbar placeholder="Search" [(ngModel)]="terms" (ionChange)="getApi()"
+    ></ion-searchbar></ion-col>
+    <ion-col size="3"> <ion-button name="power-sharp" (click)="search()">Search</ion-button></ion-col>
+    <ion-col *ngIf="enableclear" size="2"> <ion-button (click)="clear()" color="danger"><ion-icon name="close-outline"></ion-icon></ion-button></ion-col>
+  </ion-row>
+</ion-grid>
   </div>
 </section>
-<ion-card class="card_bg" *ngFor="let v of details |filter:terms">
+<ion-card class="card_bg" *ngFor="let v of details">
 <ion-item (click)="goto(v)">
 <ion-label class="ion-text-wrap">
 <h3 class="id">{{ v.GrpMemberID }}</h3>
