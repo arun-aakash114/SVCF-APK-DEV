@@ -25,7 +25,6 @@
                     <ion-card-header>
                     <p class="as-m-0">Chit Value<span>₹ {{indianRupeeFormat(n?.totalchitvalue)}}</span></p>
                     <p class="chit_no as-m-0">{{n?.groupno}}</p>
-
                     </ion-card-header>
                     <ion-card-content>
                    <p class="payable">Amount payable<span>₹ {{indianRupeeFormat(n?.TotalPayable)}}</span></p>
@@ -51,13 +50,12 @@
                     <ion-item >
                      <ion-label position="stacked">Amount Received</ion-label>
                     <ion-input (keypress)="CheckSpace($event)" formControlName="amountpayable" value=""
-                    placeholder="Amount Received"   >
+                    placeholder="Amount Received">
                     </ion-input>
                     </ion-item>
                     <ion-item >
                     <ion-label position="stacked">Interest</ion-label>
-                    <ion-input (keypress)="CheckSpace($event)" formControlName="interest"   value="" placeholder="Interest" 
-                    >
+                    <ion-input (keypress)="CheckSpace($event)" formControlName="interest" value="" placeholder="Interest">
                     </ion-input>
                     </ion-item>
                     <ion-item>

@@ -61,6 +61,8 @@ html {
     ion-icon {
         font-size: 22px;
         color: #2F2F2F;
+        margin-top: 22px !important;
+        margin-bottom: 7px !important;
     }
 }
 .list-ios {
@@ -560,9 +562,7 @@ ion-label {
         
             .ofz_time{
               margin: 15px 0;
-              p{
-                  
-              }
+              
             }
         
             .receipt_content{
@@ -722,3 +722,16 @@ ion-tab-bar{
     contain:none !important;
 height: 50px !important;
 }
+.searchbar-input.sc-ion-searchbar-md{
+
+    padding-inline-end: 15px !important;
+    padding-inline-start: 15px !important;
+
+
+ }
+ .searchbar-search-icon.sc-ion-searchbar-md{
+    display: none;
+ }
+ .searchbar-has-focus.sc-ion-searchbar-md-h .searchbar-search-icon.sc-ion-searchbar-md{
+    display: none !important;
+ }

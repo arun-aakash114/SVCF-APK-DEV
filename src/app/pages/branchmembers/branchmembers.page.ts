@@ -34,7 +34,9 @@ searchtofind:boolean
   ionViewWillEnter(){
     this.searchtofind = true
     }
-    getApi(){
+
+
+   getApi(){
       console.log("wroking")
       this.enableclear=true
       if(this.terms==""){
@@ -51,7 +53,8 @@ searchtofind:boolean
       this.details=[]
       // this.search();
    }
-    search(){
+
+   search(){
       this.searchtofind = false
       this.moneycoll_name=localStorage.getItem("col_name")
       let token=localStorage.getItem("tokens");
@@ -68,7 +71,7 @@ searchtofind:boolean
          })
            this.router.navigate(["/login"]);
         }
-        else if(error.status ===400){  
+        else if(error.status === 400){  
          this.dismiss();         
          this.presentToast("Session timeout / Server Error! Please login again");
          this.dashboardservice.logout(localStorage.getItem("col_id")).subscribe(res=>{
@@ -77,13 +80,13 @@ searchtofind:boolean
       }
        })
     }
-    goto(s) {
+    goto(s: any) {
     this.user = s;
     localStorage.setItem("user2",JSON.stringify(this.user));
     this.router.navigateByUrl('payment')
     }
     
-    async present() {
+    async present() {    
     this.isLoading = true;
     return await this.loadingController.create({
     message: 'Loading, Please wait.....'
@@ -95,6 +98,8 @@ searchtofind:boolean
     });
     });
     }
+
+
     async dismiss() {
     this.isLoading = false;
     return await this.loadingController.dismiss().then(() => console.log('dismissed'));
@@ -134,7 +139,7 @@ searchtofind:boolean
     // this.filterItems = this.details.filter(item =>  item.title.toLowerCase().indexOf(this.searchTerm.toLowerCase())) > -1;
     
     //  }   
-    async presentToast(message) {
+    async presentToast(message: string) {
        const toast = await this.toastController.create({
            message: message,
            duration: 2000

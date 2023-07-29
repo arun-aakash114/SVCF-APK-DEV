@@ -78,35 +78,48 @@ clear(){
    this.enableclear=false
    this.ionViewWillEnter();
 }
-search(){
-   this.moneycoll_name=localStorage.getItem("col_name")
+search() {
+   // Retrieve values from local storage
+   this.moneycoll_name = localStorage.getItem("col_name");
    this.moneycoll_id = localStorage.getItem("col_id");
-   console.log(this.moneycoll_id)
-   let token=localStorage.getItem("tokens");
-   this.present();
-   this.dashboardservice.user_detailssearch(this.moneycoll_id,token,this.terms).subscribe(res => {
-   this.dismiss();
-   this.details = res;
-    this.filterItems= this.details;
-   console.log(this.details)
-   },(error:HttpErrorResponse)=>{
-      if(error.status ===401){    
-         this.dismiss();       
-        this.presentToast("Session timeout, please login to continue.");
-        this.dashboardservice.logout(localStorage.getItem("col_id")).subscribe(res=>{
-      })
-        this.router.navigate(["/login"]);
-     }
-     else if(error.status ===400){  
-      this.dismiss();         
-      this.presentToast("Session timeout / Server Error! Please login again");
-      this.dashboardservice.logout(localStorage.getItem("col_id")).subscribe(res=>{
-      })
-      this.router.navigate(["/login"]);
-   }
-    })
-}
+   console.log("ak", this.moneycoll_id);
 
+   // Get token from local storage
+   let token = localStorage.getItem("tokens");
+
+   // Check if the search term is empty or contains only empty spaces
+   if (this.terms.trim() === '') {
+      return; // Do nothing if the search term is empty
+   }
+
+   // Perform the search
+   this.present();
+   this.dashboardservice.user_detailssearch(this.moneycoll_id, token, this.terms).subscribe(
+      res => {
+         this.dismiss();
+         this.details = res;
+         console.log("first0", res);
+         this.filterItems = this.details;
+         console.log(this.details);
+      },
+      (error: HttpErrorResponse) => {
+         if (error.status === 401) {
+            this.dismiss();
+            this.presentToast("Session timeout, please login to continue.");
+            this.dashboardservice.logout(localStorage.getItem("col_id")).subscribe(res => {});
+            this.router.navigate(["/login"]);
+         } else if (error.status === 400) {
+            this.dismiss();
+            this.presentToast("Session timeout / Server Error! Please login again");
+            this.dashboardservice.logout(localStorage.getItem("col_id")).subscribe(res => {});
+            this.router.navigate(["/login"]);
+         }
+      }
+   );
+}
+ionViewDidLeave () {
+   this.terms = '';
+   }
 
 goto(s) {
 this.user = s;

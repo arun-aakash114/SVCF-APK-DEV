@@ -44,7 +44,7 @@ grandtotal1:any;
   banknames:any=[];
   cusbanknames:any=[];
 constructor(private route: ActivatedRoute,public dashboardservice:DashboardService,private toast:Toast,public alertController: AlertController, private router: Router, private fb: FormBuilder, public paymentservice: PaymentService) {
-this.route.queryParams.subscribe(params => {
+this.route.queryParams.subscribe(_params => {
 if (this.router.getCurrentNavigation().extras.state) {
 this.is = this.router.getCurrentNavigation().extras.state.user7;
 this.is_array = this.router.getCurrentNavigation().extras.state.user8;
@@ -171,172 +171,78 @@ check(){
 console.log(this.cashForm.value.interest)
 }
 submit(c) {
-  if(this.cheque==true){
-    if(c.formArrayName[0].bankname){
-      console.log(c.formArrayName[0].bankname)
-      c.formArrayName[0]["bankheadid"] = c.formArrayName[0].bankname.BankHeadId
-      c.formArrayName[0].bankname = c.formArrayName[0].bankname.BankHeadName
-      
-      if(c.formArrayName[0].chequedate){
-    if(c.formArrayName[0].chequenumber){
-      this.new_check=c.formArrayName;
-      console.log(this.new_check)
-    
-      var num=0;
-    this.final_total = this.new_check.map(function(el) {
+  this.new_check = c.formArrayName;
+  console.log(this.new_check);
+
+  var num = 0;
+  this.final_total = this.new_check.map(function(el) {
     var o = Object.assign({}, el);
     o.total = +el.amountpayable.replace(/,/g,'') + +el.interest.replace(/,/g,'') + +el.otheramount.replace(/,/g,'');
     return o;
-    })
-    for (let i=0;i<this.final_total.length;i++){
-    num+=(parseFloat( this.final_total[i].total))
-    this.grandtotal=num;
-    this.grandtotal1=Number(parseFloat(this.grandtotal).toFixed(2)).toLocaleString('en', {
-    minimumFractionDigits: 2
-    })
-    }
-      
-    console.log(this.grandtotal1)
-    if(this.grandtotal == 0){
+  });
+
+  for (let i=0; i<this.final_total.length; i++) {
+    num += parseFloat(this.final_total[i].total);
+    this.grandtotal = num;
+    this.grandtotal1 = Number(parseFloat(this.grandtotal).toFixed(2)).toLocaleString('en', {
+      minimumFractionDigits: 2
+    });
+  }
+
+  console.log(this.grandtotal1);
+
+  if (this.grandtotal === 0) {
     this.presentToast('Please check values before submitting');
-    
-    }
-    else{
-    this.total1=true
-      this.presentAlertConfirm(c,this.grandtotal1);
-    //   let token1=localStorage.getItem("tokens");
-    //   this.userdata=JSON.parse(localStorage.getItem("user2"))
-    //   let id=this.userdata["MemberID"]
-    
-    //   this.totals=0;
-    //   this.todayvalue=this.grandtotal1
-    //   this.paymentservice.toddayamount(id,token1).subscribe(res=>{
-    //     this.todaypaidamount= res
-    //     console.log(this.todaypaidamount)
-    // if(this.todaypaidamount>-1){
-    //     this.totals +=parseFloat (this.todaypaidamount)
-    //     this.totals += parseFloat(this.todayvalue.replace(/,/g,''))
-    //     console.log(this.totals)
-    //     if(this.totals<200000){
-    //     this.total1=true
-    //     this.presentAlertConfirm(c,this.grandtotal1);
-    //     }
-    //     else{
-    //       this.total1=false
-    //       this.presentAlertConfirm2();
-    //     }
-    //   }
-    //   console.log(this.total1)
-    // }
-    // ,(error:HttpErrorResponse)=>{
-    //   if(error.status ===401){    
-    //     this.presentToast("Session timeout, please login to continue.");
-    //     this.dashboardservice.logout(localStorage.getItem("col_id")).subscribe(res=>{
-    //     })
-    //     this.router.navigate(["/login"]);
-    //  }
-    //  else if(error.status ===400){    
-    //   this.presentToast("Session timeout / Server Error! Please login again");
-    //   this.dashboardservice.logout(localStorage.getItem("col_id")).subscribe(res=>{
-    //   })
-    //   this.router.navigate(["/login"]);
-    // }
-    
-    // })
-    
-    }
-    }else {
-      this.presentToast("Please enter chequenumber")
-    }
-    }else {
-      this.presentToast("Please select chequedate")
-    
+  } else {
+    let token1 = localStorage.getItem("tokens");
+    this.userdata = JSON.parse(localStorage.getItem("user2"));
+    let id = this.userdata["MemberID"];
+
+    this.totals = 0;
+    this.todayvalue = this.grandtotal1;
+    this.paymentservice.toddayamount(id, token1).subscribe(
+      (res) => {
+        this.todaypaidamount = res;
+        console.log(this.todaypaidamount, "total1");
+
+        if (this.todaypaidamount > -1) {
+          this.totals += parseFloat(this.todaypaidamount);
+          this.totals += parseFloat(this.todayvalue.replace(/,/g,''));
+          console.log(this.totals);
+
+          if (this.totals >= 190000) {
+            this.presentAlertConfirm2();
+          } else {
+            this.presentAlertConfirm(c, this.grandtotal1);
+          }
+        }
+        console.log(this.total1);
+      },
+      (error: HttpErrorResponse) => {
+        if (error.status === 401) {
+          this.presentToast("Session timeout, please login to continue.");
+          this.dashboardservice.logout(localStorage.getItem("col_id")).subscribe(res => {});
+          this.router.navigate(["/login"]);
+        } else if (error.status === 400) {
+          this.presentToast("Session timeout / Server Error! Please login again");
+          this.dashboardservice.logout(localStorage.getItem("col_id")).subscribe(res => {});
+          this.router.navigate(["/login"]);
+        }
       }
-    }else {
-    this.presentToast("Please select bankname")
-    }
-  }else {
-    
-    this.new_check=c.formArrayName;
-    console.log(this.new_check)
-  
-    var num=0;
-  this.final_total = this.new_check.map(function(el) {
-  var o = Object.assign({}, el);
-  o.total = +el.amountpayable.replace(/,/g,'') + +el.interest.replace(/,/g,'') + +el.otheramount.replace(/,/g,'');
-  return o;
-  })
-  for (let i=0;i<this.final_total.length;i++){
-  num+=(parseFloat( this.final_total[i].total))
-  this.grandtotal=num;
-  this.grandtotal1=Number(parseFloat(this.grandtotal).toFixed(2)).toLocaleString('en', {
-  minimumFractionDigits: 2
-  })
+    );
   }
-    
-  console.log(this.grandtotal1)
-  if(this.grandtotal == 0){
-  this.presentToast('Please check values before submitting');
-  
-  }
-  else{
-  this.total1=true
-    this.presentAlertConfirm(c,this.grandtotal1);
-  //   let token1=localStorage.getItem("tokens");
-  //   this.userdata=JSON.parse(localStorage.getItem("user2"))
-  //   let id=this.userdata["MemberID"]
-  
-  //   this.totals=0;
-  //   this.todayvalue=this.grandtotal1
-  //   this.paymentservice.toddayamount(id,token1).subscribe(res=>{
-  //     this.todaypaidamount= res
-  //     console.log(this.todaypaidamount)
-  // if(this.todaypaidamount>-1){
-  //     this.totals +=parseFloat (this.todaypaidamount)
-  //     this.totals += parseFloat(this.todayvalue.replace(/,/g,''))
-  //     console.log(this.totals)
-  //     if(this.totals<200000){
-  //     this.total1=true
-  //     this.presentAlertConfirm(c,this.grandtotal1);
-  //     }
-  //     else{
-  //       this.total1=false
-  //       this.presentAlertConfirm2();
-  //     }
-  //   }
-  //   console.log(this.total1)
-  // }
-  // ,(error:HttpErrorResponse)=>{
-  //   if(error.status ===401){    
-  //     this.presentToast("Session timeout, please login to continue.");
-  //     this.dashboardservice.logout(localStorage.getItem("col_id")).subscribe(res=>{
-  //     })
-  //     this.router.navigate(["/login"]);
-  //  }
-  //  else if(error.status ===400){    
-  //   this.presentToast("Session timeout / Server Error! Please login again");
-  //   this.dashboardservice.logout(localStorage.getItem("col_id")).subscribe(res=>{
-  //   })
-  //   this.router.navigate(["/login"]);
-  // }
-  
-  // })
-  
-  }
-  }
-
-
 }
+
 
 async presentAlertConfirm2() {
   const alert = await this.alertController.create({
-  message: 'You have exceeded the Cash limit of ₹2 lakh/day',
+  message: 'You have exceeded the Cash limit of ₹1,90,000 lakh/day',
   buttons: [
   {
   text: 'Cancel',
   role: 'cancel',
   cssClass: 'secondary',
-  handler: (blah) => {
+  handler: (_blah) => {
   }
   }, {
   text: 'Ok',
@@ -364,7 +270,7 @@ buttons: [
 text: 'Cancel',
 role: 'cancel',
 cssClass: 'secondary',
-handler: (blah) => {
+handler: (_blah) => {
 }
 }, {
 text: 'Proceed',
@@ -393,12 +299,12 @@ buttons: [
 text: 'Cancel',
 role: 'cancel',
 cssClass: 'secondary',
-handler: (blah) => {
+handler: (_blah) => {
 }
 }, {
 text: 'Logout',
 handler: () => {
-  this.dashboardservice.logout(localStorage.getItem("col_id")).subscribe(res=>{
+  this.dashboardservice.logout(localStorage.getItem("col_id")).subscribe(_res=>{
   })
 this.router.navigate(['login']);
 localStorage.clear();

@@ -116,37 +116,37 @@ ngOnInit() {
   this.totals=0;
   this.todayvalue=localStorage.getItem("totalamounts")
   this.total1=true
-//   this.paymentservice.toddayamount(id,token1).subscribe(res=>{
-//     this.todaypaidamount= res
-//     console.log(this.todaypaidamount)
-// if(this.todaypaidamount>-1){
-//     this.totals +=parseFloat (this.todaypaidamount)
-//     this.totals += parseFloat(this.todayvalue.replace(/,/g,''))
-//     console.log(this.totals)
-//     if(this.totals<200000){
-//     this.total1=true
-//     }
-//     else{
-//       this.total1=false
-//     }
-//   }
-//   console.log(this.total1)
-// }
-// ,(error:HttpErrorResponse)=>{
-//   if(error.status ===401){        
-//     this.presentToast("Session timeout, please login to continue.");
-//     this.dashboardservice.logout(localStorage.getItem("col_id")).subscribe(res=>{
-//     })
-//     this.router.navigate(["/login"]);
-//  }
-//  else if(error.status ===400){      
-//   this.presentToast("Session timeout / Server Error! Please login again");
-//   this.dashboardservice.logout(localStorage.getItem("col_id")).subscribe(res=>{
-//   })
-//   this.router.navigate(["/login"]);
-// }
+  this.paymentservice.toddayamount(id,token1).subscribe(res=>{
+    this.todaypaidamount= res
+    console.log(this.todaypaidamount, "total3")
+if(this.todaypaidamount>-1){
+    this.totals +=parseFloat (this.todaypaidamount)
+    this.totals += parseFloat(this.todayvalue.replace(/,/g,''))
+    console.log(this.totals)
+    if(this.totals<190000){
+    this.total1=true
+    }
+    else{
+      this.total1=false
+    }
+  }
+  console.log(this.total1)
+}
+,(error:HttpErrorResponse)=>{
+  if(error.status ===401){        
+    this.presentToast("Session timeout, please login to continue.");
+    this.dashboardservice.logout(localStorage.getItem("col_id")).subscribe(res=>{
+    })
+    this.router.navigate(["/login"]);
+ }
+ else if(error.status ===400){      
+  this.presentToast("Session timeout / Server Error! Please login again");
+  this.dashboardservice.logout(localStorage.getItem("col_id")).subscribe(res=>{
+  })
+  this.router.navigate(["/login"]);
+}
 
-// })
+})
 
 
 
@@ -198,7 +198,7 @@ ngOnInit() {
       this.dashboardservice.logout(localStorage.getItem("col_id")).subscribe(res=>{
       })
       this.router.navigate(["/login"]);
-    }
+    } 
     
     })
     this.paymentservice.receiptseries1('BCAPP',colid,token).subscribe(res=>{
@@ -318,12 +318,12 @@ for (let i=0;i<this.result.length;i++){
 
 submitfunction(s){
    
-    if(this.totals<200000 && this.total1==true){
+    if(this.totals<190000 && this.total1==true){
     this.submitcash(s);
     }
     else{
       console.log("max limit")
-      this.presentToast1("You have exceeded the Cash limit of ₹2 lakh/day")
+      this.presentToast1("You have exceeded the Cash limit of ₹1,90,000 lakh/day")
     }
   
 }
