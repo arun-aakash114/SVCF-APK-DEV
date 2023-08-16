@@ -323,7 +323,7 @@ submitfunction(s){
     }
     else{
       console.log("max limit")
-      this.presentToast1("You have exceeded the Cash limit of ₹1,90,000 lakh/day")
+      this.presentToast1("You have exceeded the Cash limit of ₹1,90,000/day")
     }
   
 }

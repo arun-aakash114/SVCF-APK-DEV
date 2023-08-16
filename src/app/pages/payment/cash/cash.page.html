@@ -102,7 +102,10 @@
                 </div>
             </div>
         </div>
-        <ion-button type="submit" expand="block"  (click)="submit(cashForm.value)" class="btn" [disabled]="!cashForm.valid">Submit </ion-button>
+        <!-- [disabled]="!cashForm.valid" -->
+
+        <ion-button type="submit" expand="block"  (click)="submit(cashForm.value)" class="btn"
+         >Submit </ion-button>
     </form>
 </div>
 </ion-content>

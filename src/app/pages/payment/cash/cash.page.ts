@@ -236,7 +236,7 @@ submit(c) {
 
 async presentAlertConfirm2() {
   const alert = await this.alertController.create({
-  message: 'You have exceeded the Cash limit of ₹1,90,000 lakh/day',
+  message: 'You have exceeded the Cash limit of ₹1,90,000/day',
   buttons: [
   {
   text: 'Cancel',
