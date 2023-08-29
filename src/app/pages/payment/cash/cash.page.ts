@@ -83,7 +83,6 @@ buildForm() {
 const controlArray = this.cashForm.get('formArrayName') as FormArray;
 Object.keys(this.i_details).forEach((i) => {
   if(this.i_details[i].TotalPayable != 0){
-
     controlArray.push(
 this.fb.group({
 branchprefix: new FormControl(this.i_details[i].BranchPrefix, Validators.required),
@@ -102,7 +101,6 @@ amountreceived: new FormControl(this.i_details[i].CurrentDueAmount),
 prizedarrear: new FormControl(Number(this.i_details[i].PrizedArrear).toLocaleString('en-IN'),Validators.required),
 nonprizedarrear: new FormControl(Number(this.i_details[i].NonPrizedArrear).toLocaleString('en-IN'),Validators.required),
 interest: new FormControl('', Validators.compose([
-
 Validators.pattern('[. , 0-9 ]*')
 ])),
 otheramount: new FormControl('', Validators.compose([
@@ -114,7 +112,8 @@ Validators.pattern('^[1-9][. , 0-9]*$')
 bankname: new FormControl(''),
 customerbankname: new FormControl(''),
 chequenumber : new FormControl(''),
-chequedate: new FormControl('')
+chequedate: new FormControl(''),
+chitstatus:new FormControl (this.i_details[i].ChitStatus, Validators.required)
 })
 
 )
@@ -150,7 +149,9 @@ amountpayable: new FormControl('', Validators.compose([
 bankname: new FormControl(''),
 customerbankname: new FormControl(''),
 chequenumber : new FormControl(''),
-chequedate: new FormControl('')
+chequedate: new FormControl(''),
+chitstatus:new FormControl (this.i_details[i].ChitStatus, Validators.required)
+
 // narration: new FormControl('',Validators.required),
 })
 

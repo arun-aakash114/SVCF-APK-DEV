@@ -21,6 +21,7 @@ submitForm: FormGroup;
 new_id: any
 cash_print_preview:any;
 new: any;
+ChitStatus:any = [];
 new_value: any;
 edit_value: any;
 new_array: any = [];
@@ -285,8 +286,8 @@ for (let i=0;i<this.result.length;i++){
   agreement: new FormControl(this.result[i].agreement, Validators.required),
   installment: new FormControl(this.result[i].installment, Validators.required),
   amountreceived: new FormControl(Number(this.new_array[i].amountreceived).toLocaleString('en-IN')),
-    amountpayable: new FormControl(Number(this.new_array[i].amountpayable).toLocaleString('en-IN')),
-
+  amountpayable: new FormControl(Number(this.new_array[i].amountpayable).toLocaleString('en-IN')),
+  chitstatus: new FormControl(this.result[i].chitstatus),
   prizedarrear: new FormControl(this.new_array[i].prizedarrear),
   nonprizedarrear: new FormControl(this.new_array[i].nonprizedarrear),
   interest: new FormControl(this.result[i].interest),
@@ -375,6 +376,7 @@ submitfunction(s){
       for (let obj of this.sampletest) {
       console.log("object:", obj);
       for (let key in obj) {
+        
       }
       }
       for (let i = 0; i < this.sampletest.length; i++) {
@@ -382,8 +384,11 @@ submitfunction(s){
       this.sampletest[i].prizedarrear = this.sampletest[i].prizedarrear.replace(/,/g, '');
       this.sampletest[i].nonprizedarrear = this.sampletest[i].nonprizedarrear.replace(/,/g, '');
       this.sampletest[i].amountreceived = this.sampletest[i].amountreceived.replace(/,/g, '');
+
     if(this.sampletest[i].amountpayable != ""){
       this.sampletest[i].amountpayable= this.sampletest[i].amountpayable.replace(/,/g, '');
+
+
     
     }
     else{
@@ -445,7 +450,8 @@ submitfunction(s){
       "CustomerBankName":this.sampletest[i].customerbankname,
       "BankHeadID":this.result[0].bankheadid,
       "ChequeNo":this.sampletest[i].chequenumber,
-      "ChequeDate":this.sampletest[i].chequedate
+      "ChequeDate":this.sampletest[i].chequedate,
+      "ChitStatus":this.sampletest[i].chitstatus
       },
       {
       "Amount": this.sampletest[i].amountpayable,
@@ -482,7 +488,8 @@ submitfunction(s){
       "CustomerBankName":this.sampletest[i].customerbankname,
       "BankHeadID":this.result[0].bankheadid,
       "ChequeNo":this.sampletest[i].chequenumber,
-      "ChequeDate":this.sampletest[i].chequedate
+      "ChequeDate":this.sampletest[i].chequedate,
+      "ChitStatus":this.sampletest[i].chitstatus
       },
       {
       "Amount": +this.sampletest[i].interest + +this.sampletest[i].otheramount,
@@ -519,7 +526,8 @@ submitfunction(s){
       "BankName":this.sampletest[i].bankname,
       "BankHeadID":this.result[0].bankheadid,
       "ChequeNo":this.sampletest[i].chequenumber,
-      "ChequeDate":this.sampletest[i].chequedate
+      "ChequeDate":this.sampletest[i].chequedate,
+      "ChitStatus":this.sampletest[i].chitstatus
       },
       {
       "Amount": +this.sampletest[i].interest + +this.sampletest[i].otheramount,
@@ -556,7 +564,8 @@ submitfunction(s){
       "BankName":this.sampletest[i].bankname,
       "BankHeadID":this.result[0].bankheadid,
       "ChequeNo":this.sampletest[i].chequenumber,
-      "ChequeDate":this.sampletest[i].chequedate
+      "ChequeDate":this.sampletest[i].chequedate,
+      "ChitStatus":this.sampletest[i].chitstatus
       }
       ]
       }
@@ -597,7 +606,8 @@ submitfunction(s){
       "CustomerBankName":this.sampletest[i].customerbankname,
       "BankHeadID":this.result[0].bankheadid,
       "ChequeNo":this.sampletest[i].chequenumber,
-      "ChequeDate":this.sampletest[i].chequedate
+      "ChequeDate":this.sampletest[i].chequedate,
+      "ChitStatus":this.sampletest[i].chitstatus
       },
       {
       "Amount": this.sampletest[i].amountpayable,
@@ -634,7 +644,8 @@ submitfunction(s){
       "CustomerBankName":this.sampletest[i].customerbankname,
       "BankHeadID":this.result[0].bankheadid,
       "ChequeNo":this.sampletest[i].chequenumber,
-      "ChequeDate":this.sampletest[i].chequedate
+      "ChequeDate":this.sampletest[i].chequedate,
+      "ChitStatus":this.sampletest[i].chitstatus
       },
       {
       "Amount": +this.sampletest[i].interest + +this.sampletest[i].otheramount,
@@ -671,7 +682,8 @@ submitfunction(s){
       "CustomerBankName":this.sampletest[i].customerbankname,
       "BankHeadID":this.result[0].bankheadid,
       "ChequeNo":this.sampletest[i].chequenumber,
-      "ChequeDate":this.sampletest[i].chequedate
+      "ChequeDate":this.sampletest[i].chequedate,
+      "ChitStatus":this.sampletest[i].chitstatus
       },
       {
       "Amount": +this.sampletest[i].interest + +this.sampletest[i].otheramount,
@@ -708,7 +720,8 @@ submitfunction(s){
       "BankName":this.sampletest[i].bankname,
       "BankHeadID":this.result[0].bankheadid,
       "ChequeNo":this.sampletest[i].chequenumber,
-      "ChequeDate":this.sampletest[i].chequedate
+      "ChequeDate":this.sampletest[i].chequedate,
+      "ChitStatus":this.sampletest[i].chitstatus
       }
       ]
       }
@@ -749,7 +762,8 @@ submitfunction(s){
       "CustomerBankName":this.sampletest[i].customerbankname,
       "BankHeadID":this.result[0].bankheadid,
       "ChequeNo":this.sampletest[i].chequenumber,
-      "ChequeDate":this.sampletest[i].chequedate
+      "ChequeDate":this.sampletest[i].chequedate,
+      "ChitStatus":this.sampletest[i].chitstatus
       },
       {
       "Amount": this.sampletest[i].amountpayable,
@@ -786,7 +800,8 @@ submitfunction(s){
       "CustomerBankName":this.sampletest[i].customerbankname,
       "BankHeadID":this.result[0].bankheadid,
       "ChequeNo":this.sampletest[i].chequenumber,
-      "ChequeDate":this.sampletest[i].chequedate
+      "ChequeDate":this.sampletest[i].chequedate,
+      "ChitStatus":this.sampletest[i].chitstatus
       },
       {
       "Amount": +this.sampletest[i].interest + +this.sampletest[i].otheramount,
@@ -823,7 +838,8 @@ submitfunction(s){
       "CustomerBankName":this.sampletest[i].customerbankname,
       "BankHeadID":this.result[0].bankheadid,
       "ChequeNo":this.sampletest[i].chequenumber,
-      "ChequeDate":this.sampletest[i].chequedate
+      "ChequeDate":this.sampletest[i].chequedate,
+      "ChitStatus":this.sampletest[i].chitstatus
       },
       {
       "Amount": +this.sampletest[i].interest + +this.sampletest[i].otheramount,
@@ -860,7 +876,8 @@ submitfunction(s){
       "CustomerBankName":this.sampletest[i].customerbankname,
       "BankHeadID":this.result[0].bankheadid,
       "ChequeNo":this.sampletest[i].chequenumber,
-      "ChequeDate":this.sampletest[i].chequedate
+      "ChequeDate":this.sampletest[i].chequedate,
+      "ChitStatus":this.sampletest[i].chitstatus
       }
       ]
       

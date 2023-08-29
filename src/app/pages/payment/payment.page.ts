@@ -77,6 +77,7 @@ this.paymentservice.getProfileImg(this.user_details.MemberID,token).subscribe(re
 })
 this.paymentservice.payment_details(this.user_details.MemberID,token).subscribe(res =>{
 this.payee_details=res;
+     
 console.log(this.payee_details)
 for (let i=0;i<this.payee_details.length;i++){
   this.status=this.payee_details[i].status;
