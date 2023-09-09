@@ -25,6 +25,11 @@ constructor(private platform:Platform,public loadingController: LoadingControlle
     mobilenumber: ['',[Validators.required,Validators.maxLength(10)]]    
     })
 }
+printReceipt() {
+  // Open the print dialog
+  window.print();
+}
+
 
 ionViewWillEnter(){
   let token=localStorage.getItem("tokens");
