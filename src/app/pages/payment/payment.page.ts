@@ -72,13 +72,17 @@ this.pushvalue=[];
 this.user_details=JSON.parse(localStorage.getItem("user2"));
 console.log(this.user_details)
 let token=localStorage.getItem("tokens");
+// let id=this.user_details["M_Id"]
+let id=localStorage.getItem("col_id")
+
 this.paymentservice.getProfileImg(this.user_details.MemberID,token).subscribe(res=> {
   this.profile=res
 })
-this.paymentservice.payment_details(this.user_details.MemberID,token).subscribe(res =>{
+this.paymentservice.payment_details(this.user_details.MemberID, token, id).subscribe(res =>{
 this.payee_details=res;
+
      
-console.log(this.payee_details)
+console.log(this.payee_details, "payee_details" )
 for (let i=0;i<this.payee_details.length;i++){
   this.status=this.payee_details[i].status;
   this.arrear=this.payee_details[i].arrearamount;

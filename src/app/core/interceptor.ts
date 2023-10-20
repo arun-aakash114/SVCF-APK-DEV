@@ -12,9 +12,9 @@ export class Interceptor implements HttpInterceptor {
          let app=localStorage.getItem("app")
          console.log(this.router.url)
     if (!/^(http|https):/i.test(request.url)) {
-        console.log(request.url)
+        console.log(request.url,"m1")
                   if (request.url.includes('login')) {
-                      console.log(request.url)
+                      console.log(request.url, "m2")
                       request = request.clone({ url: "https://emp.sreevisalam.com/SVCF_Service/Service1.svc/" + request.url });
                   }
                   else {

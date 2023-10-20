@@ -41,7 +41,8 @@ for(let i=0;i<this.cash_print_preview?.length;i++){
   this.api_id.push(this.cash_print_preview[i]['ID']);
   }
    this.paymentservice.print_details(this.api_id,token).subscribe(res=>{
-    console.log(res)
+    console.log(res, "print")
+
   this.print_cash_page=res;
  
   }
@@ -109,7 +110,7 @@ ngOnInit() {
     text: 'Done',
     handler: () => {
     this.paymentservice.mobdetails(mob,this.print_cash_page).subscribe(res=>{
-        console.log(res)
+        console.log(res, "mobile")
     if(res=="OK"){
       this.presentToast("Receipt SMS successfully send to the mobile number.")
       this.router.navigateByUrl('dashboard')

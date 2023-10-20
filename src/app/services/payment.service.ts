@@ -10,8 +10,8 @@ export class PaymentService {
   constructor(private http: HttpClient) { }
 
   // https://emp.sreevisalam.com/SVCF_Service/Service1.svc/VoucherCreditDebit/AddList?token=
-  payment_details(m_id,token){
-    return this.http.get('chitdetails/Mid?Mid='+m_id+'&Token='+token);
+  payment_details(m_id,token,id){
+    return this.http.get('chitdetails/Mid?Mid='+m_id+'&Token='+token+'&moneycollid='+id);   
 }
 cash_details(branch,token){
   return this.http.post('ReceiptTable/AddList?token='+token,branch)

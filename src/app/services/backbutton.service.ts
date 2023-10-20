@@ -13,12 +13,12 @@ export class BackbuttonService {
         const blackList = this.blackLists.find(el => ev.url.includes(el));
         if (blackList) {
           this.disableBack();
-        } else {
+        } else { 
           this.enableBack();
         }
       }
     });
-   }
+   }  
      private logger() {
     console.log('disable back button');
   }

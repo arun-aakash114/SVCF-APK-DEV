@@ -119,7 +119,7 @@ chitstatus:new FormControl (this.i_details[i].ChitStatus, Validators.required)
 )
   }
   else{
-    controlArray.push(
+    controlArray.push( 
 this.fb.group({
 branchprefix: new FormControl(this.i_details[i].BranchPrefix, Validators.required),
 branchname: new FormControl(this.i_details[i].Branch, Validators.required),

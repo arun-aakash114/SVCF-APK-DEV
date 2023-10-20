@@ -1015,7 +1015,7 @@ cashfunction(data:any){
           console.log(res)
         this.print_cash_page=res;
         this.paymentservice.mobdetails(this.mobileForm['value']['mobilenumber'],this.print_cash_page).subscribe(res=>{
-          console.log(res)
+          console.log(res, "mobile2")
       if(res=="OK"){
         this.presentToast("Receipt SMS successfully send to the mobile number.")
         this.router.navigate(['/cashprint'],navigationExtras)

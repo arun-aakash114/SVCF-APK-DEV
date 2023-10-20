@@ -17,19 +17,9 @@
   <div *ngFor="let p of print_cash_page" id="printable-area" #my>
     <ion-card class="card_bg">
     <ion-card-content>
-    <!-- <div class="ofz_img">
-      <img src="../../../assets/images/img.png">
-      <div class="branch_name">
-        <p>Branch Name:<span>{{p.branchName}}</span></p>
-        <p>Form No: <span>XVI</span></p>
-      </div>
-    </div> -->
-    <!-- <div class="logo">
-      <img src="../../../assets/images/logo.png">
-    </div> -->
     <ion-grid>
       <ion-row style="justify-content: center;">
-        <ion-col size="4">
+        <ion-col size="4" >
          </ion-col>
         <ion-col size="4">
           <img src="../../../assets/images/logo.png">
@@ -53,17 +43,17 @@
       CD/REC.SERIES
       </h3>
     </ion-col>
+    
     <ion-col size="6">
-      <p>Date: <span>{{p?.datetime |date:'dd/MM/yyyy '}}</span></p>
+      <p>Date: <span>{{p?.datetime |date:'yyyy/MM/dd '}}</span></p>
       <p>Time: <span>{{p?.datetime |date:' HH:mm a'}}</span></p>
-
     </ion-col>
     </ion-row>
-      <div class="receipt_no">
+      <div class="receipg t_no">
         <p>Receipt No: <span>{{p?.cashReceiptNo}}</span></p>
       </div>
       <table class="table receipt_amts">
-        <tbody>
+        <tbody> 
           <tr>
             <th>Received From</th>
             <td>:</td>
@@ -79,11 +69,7 @@
             <td>:</td>
             <td>{{p?.chitNo}}</td>
           </tr>
-             <!-- <tr>
-            <th>Current Inst No</th>
-            <td>:</td>
-            <td>{{p?.currentInstalmentNo}}</td>
-          </tr> -->
+ 
          <tr>
             <th>Installment No</th>
             <td>:</td>
@@ -94,21 +80,7 @@
             <td>:</td>
             <td>{{p.amount===''?'0.00':indianRupeeFormat(p.amount)}}</td>
           </tr>
-       <!--    <tr>
-            <th>Current Due</th>
-            <td>:</td>
-            <td>{{p?.currentdue}}</td>
-          </tr>
-          <tr *ngIf ="p?.pArrear != 0">
-            <th>Arrear amount</th>
-            <td>:</td>
-            <td>{{p?.pArrear}}</td>
-          </tr>
-          <tr *ngIf ="p?.NpArrear != 0">
-            <th>Arrear amount</th>
-            <td>:</td>
-            <td>{{p?.NpArrear}}</td>
-          </tr> -->
+ 
           <tr>
             <th>Interest</th>
             <td>:</td>
@@ -130,34 +102,4 @@
     <p  class="sig"><span>Note: </span>This is a computer generated Receipt hence signature is not required</p>
   </div>
   </section>
-  <!-- <ion-card class="card_bg">
-    <ion-card-content >
-       <form  [formGroup]="cashprint"  autocomplete="off">
-        <ion-list lines="full">
-           <ion-item  lines="full">
-            <ion-label position="stacked">Mobile Number</ion-label>
-            <ion-input formControlName="mobilenumber" type="number" maxlength="10" pattern="[0-9]{10}"
-              placeholder="Enter Mobile Number">
-            </ion-input>
-            
-            <ion-icon name="person-outline" slot="end"></ion-icon>
-            <ion-button slot="end"  [disabled]="!cashprint.valid" (click)="presentAlertConfirm(this.cashprint.value.mobilenumber)">
-              Proceed
-            </ion-button>
-          </ion-item>
-          <div class="text-danger">
-            <ng-container *ngFor="let validation of validation_messages.mobilenumber">
-              <div class="error-message"
-                *ngIf="cashprint.get('mobilenumber').hasError(validation.type) && (cashprint.get('mobilenumber').dirty || cashprint.get('mobilenumber').touched)">
-                {{ validation.message }}
-              </div>
-            </ng-container>
-          </div>
-          </ion-list>
-          </form>
-          </ion-card-content>
-          </ion-card> -->
-  <!-- <div class="done">
-<ion-button (click)="done()">Done</ion-button>
-</div> -->
 </ion-content>
