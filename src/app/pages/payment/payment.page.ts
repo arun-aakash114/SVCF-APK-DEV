@@ -50,15 +50,7 @@ profile:any;
       disabled: false,
       checked: false,
       color: 'primary'
-    }, {
-      id: '2',
-      name: 'radio_list',
-      value: 'radio_2',
-      text: 'Cheque',
-      disabled: false,
-      checked: true,
-      color: 'secondary'
-    }
+    } 
   ];
 constructor(private route: ActivatedRoute,public dashboardservice:DashboardService,public alertController: AlertController, private router: Router,public paymentservice:PaymentService,
   public toastController: ToastController) {

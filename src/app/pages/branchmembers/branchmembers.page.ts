@@ -47,7 +47,7 @@ searchtofind:boolean
    }
    
    clear(){
-      this.terms=""
+      this.terms=""  
       this.enableclear=false
       this.searchtofind = true
       this.details=[]
@@ -61,8 +61,9 @@ searchtofind:boolean
       this.user_details=JSON.parse(localStorage.getItem("brdetails"));
       this.dashboardservice.branchmember(this.user_details.Head_Id,this.terms,token).subscribe(res => {
       this.details = res;
+      console.log(res, "details");
        this.filterItems= this.details;
-      console.log(this.details)
+      console.log(this.details,"details2")
       },(error:HttpErrorResponse)=>{
          if(error.status ===401){    
             this.dismiss();       

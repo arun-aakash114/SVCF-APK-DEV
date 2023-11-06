@@ -178,7 +178,7 @@ if(this.todaypaidamount>-1){
  let colid = localStorage.getItem("col_id")
  if(this.new_array[0].bankname){
       this.paymentservice.Vouchernumforcheq(this.new_array[0].branchid,colid,token).subscribe(res=>{
-        console.log(res)
+        console.log(res, "banknameres")
         this.count=res;
       })
       this.voucher_count = 0
@@ -292,7 +292,7 @@ for (let i=0;i<this.result.length;i++){
   nonprizedarrear: new FormControl(this.new_array[i].nonprizedarrear),
   interest: new FormControl(this.result[i].interest),
   otheramount: new FormControl(Number(this.result[i].otheramount).toLocaleString('en-IN')),
-  bankname : new FormControl((this.result[i].bankname ? this.result[i].bankname:'')),
+  bankname : new FormControl((this.result[i].bankname ? this.result[i].bankname.BankHeadName  :'')),
   customerbankname : new FormControl((this.result[i].customerbankname ? this.result[i].customerbankname:'')),
   chequenumber : new FormControl((this.result[i].chequenumber ? this.result[i].chequenumber:'')),
   chequedate : new FormControl((this.result[i].chequedate ? format(new Date(this.result[i].chequedate), "yyyy/MM/dd"): '')),
@@ -966,6 +966,8 @@ cashfunction(data:any){
         this.paymentservice.post_vouchercash(data,localStorage.getItem("tokens"),Number(this.mobileForm['value']['mobilenumber'])).subscribe((res:Observable<any>) => {
           if(res){
             this.voucher_res = res;
+            console.log("rescheck", res);
+            
             this.dismiss();
         this.presentToast("Cheque Data submited successfully")
         this.router.navigate(['/dashboard'])

@@ -117,7 +117,7 @@
   <ion-item>
   <ion-label>
   <ion-icon name="cash" class="icon"></ion-icon>
-  <span class="text">Choose Payment </span>
+  <span class="text">Choose Payment  </span>
   </ion-label>
  </ion-item>
  <ion-radio-group allow-empty-selection="true" name="radio-group" (ionChange)="radioGroupChange($event)" #radioGroup>
@@ -126,7 +126,7 @@
     >
     <ion-label>{{item.text}}</ion-label>
     <ion-radio slot="start" name="{{item.name}}" value="{{item.value}}" checked="item.checked"
-      color="{{item.color}}" disabled="{{item.disabled}}"></ion-radio>
+      color="{{item.color}}" disabled="{{item.disabled}}" ></ion-radio>
   </ion-item>
 
 </ion-radio-group>

@@ -23,6 +23,7 @@ enableclear=false;
 items_containers:any;
 isLoading = false;
 filterItems:any;
+branchid:any;
 
 constructor(private platform:Platform,private router: Router,public alertController: AlertController,  public dashboardservice: DashboardService, private route: ActivatedRoute,public loadingController: LoadingController,
    public toastController: ToastController) {
@@ -42,10 +43,12 @@ console.log(this.moneycoll_id)
 let token=localStorage.getItem("tokens");
 this.present();
 this.dashboardservice.user_details(this.moneycoll_id,token).subscribe(res => {
+
 this.dismiss();
 this.details = res;
  this.filterItems= this.details;
-console.log(this.details)
+console.log(this.details, "dis")
+localStorage.setItem("B_Id",this.details[0].B_Id)
 },(error:HttpErrorResponse)=>{
    if(error.status ===401){    
       this.dismiss();       
@@ -83,6 +86,8 @@ search() {
    this.moneycoll_name = localStorage.getItem("col_name");
    this.moneycoll_id = localStorage.getItem("col_id");
    console.log("ak", this.moneycoll_id);
+   this.branchid = localStorage.getItem("B_Id")
+
 
    // Get token from local storage
    let token = localStorage.getItem("tokens");
@@ -98,9 +103,12 @@ search() {
       res => {
          this.dismiss();
          this.details = res;
-         console.log("first0", res);
+        console.log(res, "resdetails");
+        
+         console.log("first1", this.filterItems);
+
          this.filterItems = this.details;
-         console.log(this.details);
+         console.log("first0", this.details);
       },
       (error: HttpErrorResponse) => {
          if (error.status === 401) {
