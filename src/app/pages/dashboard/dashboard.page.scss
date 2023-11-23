@@ -59,4 +59,20 @@ ion-spinner  {
     margin-top: 0px !important;
     height: 42px !important;
   }
+  .customer_details {
+    position: relative;
+    z-index: 1;
+  }
+  
+  .sticky-logo {
+    position: sticky;
+    top: 0;
+    z-index: 2;
+  }
+  
+  .scrollable-content {
+    overflow-y: auto;
+    height: calc(100vh - 150px); /* Adjust the height based on your layout */
+    padding-top: 20px; /* Add padding to prevent content from being hidden behind the sticky header */
+  }
   
