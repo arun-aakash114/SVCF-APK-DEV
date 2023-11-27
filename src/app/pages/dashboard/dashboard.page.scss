@@ -41,6 +41,9 @@ float:right;
     text-transform: capitalize;
     font-weight: 400;
 margin-bottom: 0;
+margin-top: 11PX;
+    text-align: RIGHT;
+    margin-right: 10PX;
     }
 ion-spinner  {
     stroke: #ff0000;
@@ -58,21 +61,42 @@ ion-spinner  {
   .serch_icon{
     margin-top: 0px !important;
     height: 42px !important;
+    margin-left: 6px;
   }
   .customer_details {
-    position: relative;
-    z-index: 1;
+    position: fixed;
+    z-index: 1000;
+    width: 100%;
   }
   
   .sticky-logo {
-    position: sticky;
-    top: 0;
+    position: relative;
+    top: -19px;
     z-index: 2;
+    float: left;
+  }
+  .customer_name{
+    padding: 0;
+    margin-top: 6px;
+  }
+  .search{
+    margin-top: -22px;
   }
   
   .scrollable-content {
     overflow-y: auto;
     height: calc(100vh - 150px); /* Adjust the height based on your layout */
-    padding-top: 20px; /* Add padding to prevent content from being hidden behind the sticky header */
+    margin-top: 200px; /* Add padding to prevent content from being hidden behind the sticky header */
   }
-  
+
+  .closeicon_holder{
+    padding-right: 0;
+    margin-right: 0;
+    text-align: right;
+  }
+ .searchbar_holder {
+    padding: 2px;
+}
+.otherbranch{
+  --background:#9e9e9e;
+}

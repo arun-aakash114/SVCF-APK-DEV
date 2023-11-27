@@ -10,7 +10,7 @@
       </ion-col>
     </ion-row>
     <div class="search">
-      <ion-grid>
+      <ion-grid class="searchbar_holder">
         <ion-row>
           <ion-col size="8">
             <ion-searchbar placeholder="Search" [(ngModel)]="terms" (ionChange)="getApi()"></ion-searchbar>
@@ -20,7 +20,7 @@
               <ion-icon name="search-outline"></ion-icon>
             </ion-button>
           </ion-col>
-          <ion-col *ngIf="enableclear" size="2">
+          <ion-col *ngIf="enableclear" size="2" class="closeicon_holder">
             <ion-button class="serch_icon" (click)="clear()" color="danger">
               <ion-icon name="close-outline"></ion-icon>
             </ion-button>
@@ -30,7 +30,7 @@
     </div>
     <ion-row>
       <ion-col><ion-button class="total_chits" (click)="history()">History</ion-button></ion-col>
-      <ion-col><ion-button class="total_chits" (click)="Otherbr()">Other Branches</ion-button></ion-col>
+      <ion-col><ion-button class="total_chits otherbranch" (click)="Otherbr()">Other Branches</ion-button></ion-col>
     </ion-row>
   </section>
 

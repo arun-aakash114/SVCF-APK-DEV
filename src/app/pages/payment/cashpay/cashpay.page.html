@@ -53,11 +53,13 @@
         <ion-item >
         <ion-label position="stacked">Interest</ion-label>
         <ion-input formControlName="interest"  value="" placeholder="interest" readonly>
+          
         </ion-input>
         </ion-item>
         <ion-item>
         <ion-label position="stacked">Other Amount</ion-label>
-        <ion-input formControlName="otheramount"  value="" placeholder="otheramount" readonly>
+        <ion-input formControlName="otheramount"  value="" placeholder="otheramount" readonly 
+        inputmode="decimal" pattern="[0-9]*[.]?[0-9]+">
         </ion-input>
         </ion-item>
         <ion-item *ngIf="this.result[0].bankname">
@@ -72,7 +74,7 @@
             </ion-item>
             <ion-item *ngIf="this.result[0].bankname">
               <ion-label position="stacked">Cheque Date</ion-label>
-              <ion-input formControlName="chequedate" readonly>
+              <ion-input formControlName="chequedate" readonly >
               </ion-input>
               </ion-item>
         <!-- <ion-item>

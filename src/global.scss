@@ -305,7 +305,7 @@ ion-label {
 .svcf_dashboard_page{
     .customer_details{
             background: linear-gradient(to right, #1B2233 0%, #354466 100%);
-            padding: 16px;
+            padding: 10px;
             .customer_name{
                  h2 {
                     margin: 0;
@@ -329,7 +329,8 @@ ion-label {
             }
         .total_chits{
             color: #fff;
-            margin: 18px 0 24px 0;
+            margin: 0px 0 0px 0;
+            width: 100%;
             span{
                 padding: 7px 14px;
                 background: linear-gradient(to right, #677DE1 0%, #A1B0F0 100%);

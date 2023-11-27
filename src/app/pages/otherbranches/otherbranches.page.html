@@ -2,9 +2,9 @@
   <section class="customer_details">
     <ion-row size="12">
     <ion-col class="customer_name" size="11">
-    <ion-img src="assets/images/logo.png"></ion-img>
+    <ion-img src="assets/images/logo.png" class="sticky-logo"></ion-img>
     
-      <ion-button class="total_chits" (click)="history()">History</ion-button>
+      
     <h3 class="login-name">{{moneycoll_name}}</h3>
     </ion-col>
     
@@ -12,11 +12,22 @@
     <ion-icon name="power-sharp" (click)="logout()"></ion-icon>
     </ion-col>
     </ion-row>
+    <ion-row>
     <div class="search">
-      <ion-searchbar placeholder="search" [(ngModel)]="terms" 
+      <ion-searchbar placeholder="search" [(ngModel)]="terms" class="ob_search"
       ></ion-searchbar>
+      <ion-button class="total_chits_otherbranch" (click)="history()">History</ion-button>
     </div>
+  </ion-row>
+    <!-- <ion-button class="total_chits" (click)="history()">History</ion-button> -->
+
+    <!-- <ion-row>
+      <ion-col><ion-button class="total_chits_otherbranch" (click)="history()">History</ion-button></ion-col>
+    </ion-row> -->
+
+
   </section>
+  <div class="scrollable-content">
   <ion-card class="card_bg" *ngFor="let v of details |filter:terms">
   <ion-item (click)="goto(v)">
   <ion-label class="ion-text-wrap">
@@ -26,6 +37,7 @@
   <!-- <ion-label class="chit">Email:({{v.B_EMail}})</ion-label> -->
   </ion-item>
   </ion-card>
+</div>
   <!-- <p *ngIf= "terms == ''">dsf</p> -->
   <!-- <div style="height: 250px;text-align: center;margin-top: 50%;" *ngIf="(details | filter: terms).length === 0">No Results Found</div> -->
   </ion-content>

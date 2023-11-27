@@ -79,6 +79,8 @@ formArrayName: this.fb.array([])
 })
 this.buildForm();
 }
+
+
 buildForm() {
 const controlArray = this.cashForm.get('formArrayName') as FormArray;
 Object.keys(this.i_details).forEach((i) => {
@@ -101,13 +103,13 @@ amountreceived: new FormControl(this.i_details[i].CurrentDueAmount),
 prizedarrear: new FormControl(Number(this.i_details[i].PrizedArrear).toLocaleString('en-IN'),Validators.required),
 nonprizedarrear: new FormControl(Number(this.i_details[i].NonPrizedArrear).toLocaleString('en-IN'),Validators.required),
 interest: new FormControl('', Validators.compose([
-Validators.pattern('[. , 0-9 ]*')
+Validators.pattern('[.  0-9 ]*')
 ])),
 otheramount: new FormControl('', Validators.compose([
-Validators.pattern('[. , 0-9 ]*')
+Validators.pattern('[.  0-9 ]*')
 ])),
 amountpayable: new FormControl('', Validators.compose([
-Validators.pattern('^[1-9][. , 0-9]*$')
+Validators.pattern('^[1-9][.  0-9]*$')
 ])),
 bankname: new FormControl(''),
 customerbankname: new FormControl(''),
@@ -138,10 +140,10 @@ prizedarrear: new FormControl(Number(this.i_details[i].PrizedArrear).toLocaleStr
 nonprizedarrear: new FormControl(Number(this.i_details[i].NonPrizedArrear).toLocaleString('en-IN'),Validators.required),
 interest: new FormControl('', Validators.compose([
 
-Validators.pattern('[. , 0-9 ]*')
+Validators.pattern('[.  0-9 ]*')
 ])),
 otheramount: new FormControl('', Validators.compose([
-Validators.pattern('[. , 0-9 ]*')
+Validators.pattern('[.  0-9 ]*')
 ])),
 amountpayable: new FormControl('', Validators.compose([
 

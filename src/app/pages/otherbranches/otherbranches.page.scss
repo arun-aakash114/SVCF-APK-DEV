@@ -41,6 +41,8 @@ float:right;
     text-transform: capitalize;
     font-weight: 400;
 margin-bottom: 0;
+text-align: right;
+margin: 10px;
     }
 ion-spinner  {
     stroke: #ff0000;
@@ -54,4 +56,41 @@ ion-spinner  {
     left: 0;
     bottom: 0;
     right: 0;
+  }
+
+
+  .customer_details {
+    position: relative;
+    z-index: 1;
+  }
+  
+  .sticky-logo {
+    position: sticky;
+    top: 0;
+    z-index: 2;
+    float: left;
+    margin-top: -14px;
+  }
+  
+  .scrollable-content {
+    overflow-y: auto;
+    height: calc(100vh - 150px); /* Adjust the height based on your layout */
+    padding-top: 20px; /* Add padding to prevent content from being hidden behind the sticky header */
+  }
+  .total_chits_otherbranch{
+    width: 30%;
+    float: right;
+    padding: 1px 0px;
+    height: 46px;
+    margin-top: -2px;
+  }
+  .ob_search{
+    width: 67%;
+    float: left;
+  }
+  .search{
+    width: 100%;
+  }
+  .searchbar-input{
+    border-radius: 4px;
   }

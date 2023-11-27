@@ -7,12 +7,14 @@ import { Toast } from '@ionic-native/toast/ngx';
 import { HttpErrorResponse } from '@angular/common/http';
 import { DashboardService } from '../../services/dashboard.service';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { Printer } from '@ionic-native/printer/ngx';
 @Component({
 selector: 'app-cashprint',
 templateUrl: './cashprint.page.html',
 styleUrls: ['./cashprint.page.scss'],
 })
 export class CashprintPage implements OnInit {
+  @ViewChild('my', { static: false }) my: ElementRef;
 content:any;
 cash_print_preview:any;
 devices:any;
@@ -20,14 +22,15 @@ api_id:any=[];
 print_cash_page:any;
 isLoading = false;
 cashprint:FormGroup
-constructor(private platform:Platform,public loadingController: LoadingController, public dashboardservice: DashboardService,private toast :Toast,public paymentservice:PaymentService,private modalCtrl:ModalController, private alertCtrl:AlertController,private router:Router,private route: ActivatedRoute,    private fb:FormBuilder) {
+constructor(private platform:Platform,public loadingController: LoadingController, public dashboardservice: DashboardService,private toast :Toast,public paymentservice:PaymentService,private modalCtrl:ModalController, private alertCtrl:AlertController,private router:Router,private route: ActivatedRoute,    private fb:FormBuilder, private printer: Printer) {
   this.cashprint = this.fb.group({
     mobilenumber: ['',[Validators.required,Validators.maxLength(10)]]    
     })
 }
 printReceipt() {
   // Open the print dialog
-  window.print();
+  const printableArea = this.my.nativeElement.innerHTML; // Use the correct reference to your HTML content
+  this.printer.print(printableArea, { name: 'Receipt', duplex: true });
 }
 
 

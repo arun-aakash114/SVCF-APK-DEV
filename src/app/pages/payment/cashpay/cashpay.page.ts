@@ -264,6 +264,8 @@ for (let i=0;i<this.result.length;i++){
   })
   this.buildForm1();
   }
+
+  
   buildForm1() {
   const controlArray = this.submitForm.get('formArrayName') as FormArray;
   this.mobileForm = this.fb.group({

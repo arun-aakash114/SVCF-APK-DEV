@@ -76,7 +76,7 @@ export class OtherbranchesPage implements OnInit {
           this.dashboardservice.logout(localStorage.getItem("col_id")).subscribe(res=>{
           })
           localStorage.clear();
-          this.router.navigate(['selectapp']);
+          this.router.navigate(['/login']);
           }
           }
           ]

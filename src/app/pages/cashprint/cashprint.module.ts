@@ -7,6 +7,7 @@ import { IonicModule } from '@ionic/angular';
 
 import { CashprintPage } from './cashprint.page';
 import { Toast } from '@ionic-native/toast/ngx';
+import { Printer } from '@ionic-native/printer/ngx';
 
 const routes: Routes = [
   {
@@ -24,7 +25,7 @@ const routes: Routes = [
     RouterModule.forChild(routes)
   ],
   declarations: [CashprintPage],
-  providers:[Toast]
+  providers:[Toast, Printer]
 
   
 })
