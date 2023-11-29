@@ -117,4 +117,82 @@ justify-content: space-between;
     color:red;
     margin-left: 20px;
 }
- 
+.ob_search{
+    padding-top: 0;
+    margin-top: -1px;
+    height: 44px;
+    width: 75px;
+
+  }
+//   .search{
+//     width: 100%;
+//   }
+  .searchbar-input{
+    border-radius: 4px;
+  }
+  .total_chits_otherbranch{
+    width: 42%;
+    float: right;
+    height: 51px;
+    margin-top: 55px;
+    margin-left: 58px;
+    padding-left: -1px;
+    padding-left: 0px;
+    padding: 2px 0px;
+    margin-right: -33px;
+
+  }
+  .ob_clear{
+    padding-top: 0px;
+    margin-top: -2px;
+    height: 45px;
+    width: 60px;
+  }
+ .login-name{
+    font-size: 16px;
+    color: white;
+    text-transform: capitalize;
+    font-weight: 400;
+    margin-bottom: 0;
+    text-align: right;
+    margin: -27px;
+    float: left;
+    /* margin-top: -55px; */
+    margin-left: 210px;
+    margin-bottom: 15px;
+    margin-top: -100px;
+ }
+
+ .scroll_card{
+    padding-top: 230px;
+ }
+
+ .card_bg{
+    margin-top: -12px;
+   
+}
+.chit{
+    padding-left: 100px;
+    font-weight: 300;
+}
+.ion-text-wrap h3{
+    color: #000;
+}
+.name{
+    color: #000;
+    font-weight: 700;
+}
+.sticky-logo {
+    position: sticky;
+    top: 0;
+    z-index: 2;
+    float: left;
+    margin-top: -30px;
+  }
+  .customer_details{
+    position: fixed; 
+    z-index: 1000;
+  }
+  .no_found{
+    padding-top: 300px;
+  }

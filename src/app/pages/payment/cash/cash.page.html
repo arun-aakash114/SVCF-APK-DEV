@@ -19,7 +19,7 @@
     </div>
     <form [formGroup]="cashForm" >
         <div [formArrayName]="'formArrayName'" class="payment_form">
-            <div *ngFor="let n of i_details; let i = index">
+            <div *ngFor="let n of i_details; let i = index" class="payment_form-1"  >
                 <div [formGroupName]="i">
                     <ion-card>
                     <ion-card-header>
@@ -49,18 +49,20 @@
                     </ion-item>
                     <ion-item >
                      <ion-label position="stacked">Amount Received</ion-label>
-                    <ion-input (keypress)="CheckSpace($event)" formControlName="amountpayable" value=""
+                    <ion-input type="number" 
+                    (input)="CheckSpace1($event)"
+                    (keypress)="CheckSpace($event)" formControlName="amountpayable" value=""
                     placeholder="Amount Received">
                     </ion-input>
                     </ion-item>
                     <ion-item >
                     <ion-label position="stacked">Interest</ion-label>
-                    <ion-input (keypress)="CheckSpace($event)" formControlName="interest" value="" placeholder="Interest">
+                    <ion-input (input)="CheckSpace1($event)" type="number" (keypress)="CheckSpace($event)" formControlName="interest" value="" placeholder="Interest">
                     </ion-input>
                     </ion-item>
                     <ion-item>
                     <ion-label position="stacked">Other Amount</ion-label>
-                    <ion-input (keypress)="CheckSpace($event)" formControlName="otheramount"  value=""
+                    <ion-input (input)="CheckSpace1($event)" type="number" (keypress)="CheckSpace($event)" formControlName="otheramount"  value=""
                     placeholder="Other Amount">
                     </ion-input>
                     </ion-item>

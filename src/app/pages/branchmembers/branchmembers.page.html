@@ -1,10 +1,10 @@
 <ion-content class="svcf_dashboard_page">
-  <section class="customer_details">
+  <section class="customer_details ">
     <ion-row size="12">
     <ion-col class="customer_name" size="11">
-    <ion-img src="assets/images/logo.png"></ion-img>
+    <ion-img src="assets/images/logo.png"  class="sticky-logo"></ion-img>
     
-      <ion-button class="total_chits" (click)="history()">History</ion-button>
+      <ion-button class="total_chits" (click)="history()" class="total_chits_otherbranch" >History</ion-button>
     <h3 class="login-name">{{moneycoll_name}}</h3>
     </ion-col>
     
@@ -16,14 +16,15 @@
       <ion-grid>
         <ion-row>
           <ion-col size="7">
-      <ion-searchbar placeholder="Search" [(ngModel)]="terms" (ionChange)="getApi()"
+      <ion-searchbar placeholder="Search" [(ngModel)]="terms" (ionChange)="getApi()" 
       ></ion-searchbar></ion-col>
-      <ion-col size="3"> <ion-button name="power-sharp" (click)="search()">Search</ion-button></ion-col>
-      <ion-col *ngIf="enableclear" size="2"> <ion-button (click)="clear()" color="danger"><ion-icon name="close-outline"></ion-icon></ion-button></ion-col>
+      <ion-col size="3"> <ion-button name="power-sharp" (click)="search()"
+         class="ob_search"><ion-icon name="search-outline"></ion-icon></ion-button></ion-col>
+      <ion-col *ngIf="enableclear" size="2"> <ion-button (click)="clear()" color="danger" class="ob_clear" ><ion-icon name="close-outline"></ion-icon></ion-button></ion-col>
     </ion-row></ion-grid>
     </div>
   </section>
-  <div *ngIf="this.details.length!==0">
+  <div *ngIf="this.details.length!==0" class="scroll_card">
   <ion-card class="card_bg" *ngFor="let v of details;">
   <ion-item (click)="goto(v)">
   <ion-label class="ion-text-wrap">
@@ -35,6 +36,8 @@
   </ion-card>
 </div>
   <!-- <p *ngIf= "terms == ''">dsf</p> -->
+  <div class="no_found">
   <div style="height: 250px;text-align: center;margin-top: 50%;" *ngIf="searchtofind">Search to find the customer</div>
   <div style="height: 250px;text-align: center;margin-top: 50%;" *ngIf="details.length === 0 && !searchtofind">No Results Found</div>
+</div>
   </ion-content>

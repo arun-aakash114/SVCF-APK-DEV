@@ -79,6 +79,15 @@ formArrayName: this.fb.array([])
 })
 this.buildForm();
 }
+CheckSpace1(event: InputEvent) {
+  const inputValue = (event.target as HTMLInputElement).value;
+  const pattern = /^\d+(\.\d{0,2})?$/; // Pattern to allow only numbers and up to two digits after the dot
+
+  if (!pattern.test(inputValue)) {
+    // Invalid character detected or more than two digits after the dot, prevent its input
+    (event.target as HTMLInputElement).value = inputValue.slice(0, -1); // Remove the last entered character
+  }
+}
 
 
 buildForm() {
@@ -180,7 +189,7 @@ submit(c) {
   var num = 0;
   this.final_total = this.new_check.map(function(el) {
     var o = Object.assign({}, el);
-    o.total = +el.amountpayable.replace(/,/g,'') + +el.interest.replace(/,/g,'') + +el.otheramount.replace(/,/g,'');
+    o.total = +el.amountpayable + +el.interest + +el.otheramount;
     return o;
   });
 

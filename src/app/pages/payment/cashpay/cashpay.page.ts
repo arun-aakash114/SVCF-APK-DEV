@@ -10,6 +10,7 @@ import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { Toast } from '@ionic-native/toast/ngx';
 import { Observable } from 'rxjs';
 import { DashboardService } from 'src/app/services/dashboard.service';
+import { AlertController } from '@ionic/angular';
 @Component({
 selector: 'app-payment',
 templateUrl: './cashpay.page.html',
@@ -83,7 +84,7 @@ B_Groups: any=[];
   userdata: any=[];
   total1: boolean;
   mobileForm: FormGroup;
-constructor(private fb: FormBuilder,public dashboardservice:DashboardService,private toast: Toast,private http: HttpClient, public loadingController: LoadingController, private router: Router, private route: ActivatedRoute, public paymentservice: PaymentService) {
+constructor(private fb: FormBuilder,public dashboardservice:DashboardService,private toast: Toast,private http: HttpClient, public loadingController: LoadingController, private router: Router, private route: ActivatedRoute, public paymentservice: PaymentService, private alertController: AlertController) {
 this.route.queryParams.subscribe(params => {
 if (this.router.getCurrentNavigation().extras.state) {
 this.new = this.router.getCurrentNavigation().extras.state.user6;
@@ -225,7 +226,7 @@ if(this.todaypaidamount>-1){
 var num=0;
 this.result = this.new_array.map(function(el) {
 var o = Object.assign({}, el);
-o.total = +el.amountpayable.replace(/,/g,'') + +el.interest.replace(/,/g,'') + +el.otheramount.replace(/,/g,'');
+o.total = +el.amountpayable + +el.interest + +el.otheramount;
 o.total1=Number(parseFloat(o.total).toFixed(2)).toLocaleString('en', {
     minimumFractionDigits: 2
 })
@@ -1113,11 +1114,35 @@ cashfunction(data:any){
      })
 
 
-}
+} 
 
-  logout() {
-  this.router.navigateByUrl('login');
-  localStorage.clear();
+ 
+  async logout() {
+    const alert = await this.alertController.create({
+      header: 'Confirm Logout',
+      message: 'Are you sure you want to logout?',
+      buttons: [
+        {
+          text: 'Cancel',
+          role: 'cancel',
+          handler: () => {
+            // User clicked the "Cancel" button
+            console.log('Logout canceled');
+          }
+        },
+        {
+          text: 'Logout',
+          handler: () => {
+            // User clicked the "Logout" button
+            this.router.navigateByUrl('login');
+            localStorage.clear();
+            console.log('User logged out');
+          }
+        }
+      ]
+    });
+  
+    await alert.present();
   }
   async present() {
   this.isLoading = true;
