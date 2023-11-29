@@ -33,6 +33,7 @@ searchtofind:boolean
   }
   ionViewWillEnter(){
     this.searchtofind = true
+    this.moneycoll_name=localStorage.getItem("col_name")
     }
 
 

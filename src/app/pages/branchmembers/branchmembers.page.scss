@@ -155,12 +155,13 @@ justify-content: space-between;
     font-weight: 400;
     margin-bottom: 0;
     text-align: right;
-    margin: -27px;
+    margin: 0px;
     float: left;
     /* margin-top: -55px; */
-    margin-left: 210px;
+    // margin-left: 210px;
     margin-bottom: 15px;
-    margin-top: -100px;
+    margin-top: -98px;
+    width: 100%;
  }
 
  .scroll_card{
@@ -192,6 +193,7 @@ justify-content: space-between;
   .customer_details{
     position: fixed; 
     z-index: 1000;
+    width: 100%;
   }
   .no_found{
     padding-top: 300px;
