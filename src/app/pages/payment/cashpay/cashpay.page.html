@@ -105,20 +105,29 @@
   </form>
   <p class="grand_total">Grand Total<span>₹ {{grandtotal1}}</span>
 </p>
-<form [formGroup]="mobileForm" class="payment_form" autocomplete="off">
+<div class="payment_form">
+<form [formGroup]="mobileForm"   autocomplete="off">
+  <div class="mob">
   <ion-list>
     <ion-item class="mob">
       <ion-label position="stacked">Mobile Number</ion-label>
-      <ion-input formControlName="mobilenumber"  type="text" minlength="10" maxlength="10"
-        ></ion-input>
+       
+
+        <ion-input type="number" 
+        (input)="CheckSpace($event)"
+        (keypress)="CheckSpace($event)" formControlName="mobilenumber" value=""
+         >
+        </ion-input>
+
     </ion-item>
     <!-- <ion-item lines="full">
       <ion-label position="floating" >Enter mobile number</ion-label>
       <ion-input formControlName="mobile" type="number" ></ion-input>
   </ion-item > -->
   </ion-list>
-
+</div>
 </form>
+</div>
 <ion-button type="submit" expand="block" (click)="submitfunction(submitForm.value)" class="btn">Submit </ion-button>
 </div>
 </ion-content>

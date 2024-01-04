@@ -8,6 +8,9 @@ import { HttpErrorResponse } from '@angular/common/http';
 import { DashboardService } from '../../services/dashboard.service';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Printer } from '@ionic-native/printer/ngx';
+import { HttpClient } from '@angular/common/http';
+ 
+
 @Component({
 selector: 'app-cashprint',
 templateUrl: './cashprint.page.html',
@@ -22,7 +25,7 @@ api_id:any=[];
 print_cash_page:any;
 isLoading = false;
 cashprint:FormGroup
-constructor(private platform:Platform,public loadingController: LoadingController, public dashboardservice: DashboardService,private toast :Toast,public paymentservice:PaymentService,private modalCtrl:ModalController, private alertCtrl:AlertController,private router:Router,private route: ActivatedRoute,    private fb:FormBuilder, private printer: Printer) {
+constructor(private platform:Platform,private http: HttpClient,public loadingController: LoadingController, public dashboardservice: DashboardService,private toast :Toast,public paymentservice:PaymentService,private modalCtrl:ModalController, private alertCtrl:AlertController,private router:Router,private route: ActivatedRoute,    private fb:FormBuilder, private printer: Printer) {
   this.cashprint = this.fb.group({
     mobilenumber: ['',[Validators.required,Validators.maxLength(10)]]    
     })

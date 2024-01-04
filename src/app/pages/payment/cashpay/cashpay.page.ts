@@ -266,7 +266,18 @@ for (let i=0;i<this.result.length;i++){
   this.buildForm1();
   }
 
+  CheckSpace(event: InputEvent) {
+    const inputValue = (event.target as HTMLInputElement).value;
+    const pattern = /^\d{0,9}$/; // Pattern to allow only up to 10 digits
   
+    if (!pattern.test(inputValue)) {
+      // More than 10 digits detected, prevent the input
+      event.preventDefault();
+    }
+  }
+
+
+
   buildForm1() {
   const controlArray = this.submitForm.get('formArrayName') as FormArray;
   this.mobileForm = this.fb.group({

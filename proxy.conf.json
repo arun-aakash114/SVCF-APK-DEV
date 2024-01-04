@@ -1,0 +1,12 @@
+{
+  "/api": {
+    "target": "http://124.124.79.122:1020",
+    "secure": false,
+    "changeOrigin": true,
+    "headers": {
+      "Access-Control-Allow-Origin": "http://localhost:8100",
+      "Access-Control-Allow-Methods": "GET, POST, OPTIONS, PUT, DELETE",
+      "Access-Control-Allow-Headers": "Origin, X-Requested-With, Content-Type, Accept"
+    }
+  }
+}

@@ -196,5 +196,10 @@ justify-content: space-between;
     width: 100%;
   }
   .no_found{
-    padding-top: 300px;
+    margin-top: 202px;
+    background: #ffffff;
+    height: calc(100% - 204px);
+    display: flex;
+    align-items: center;
+    justify-content: center;
   }

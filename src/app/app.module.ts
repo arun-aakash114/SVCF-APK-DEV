@@ -19,6 +19,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { LocalNotifications } from '@ionic-native/local-notifications/ngx';
 import { InAppBrowser } from '@awesome-cordova-plugins/in-app-browser/ngx';
 import { Device } from '@ionic-native/device/ngx';
+import { PdfPrintService } from './services/pdf-print.service';
 @NgModule({
   declarations: [AppComponent],
   entryComponents: [],
@@ -40,6 +41,7 @@ import { Device } from '@ionic-native/device/ngx';
     Network,
     Dialogs,WebIntent,
     InAppBrowser,
+    PdfPrintService,
     Device,
     SocialSharing,
     LocalNotifications,
