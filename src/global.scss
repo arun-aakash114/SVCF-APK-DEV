@@ -123,9 +123,9 @@ font-weight:bold;
     display: flex;
     font-weight:bold;
     padding: 15px;
-    color: #fff;
-    background: #1A5B9C;
-    border-left: 8px solid #050D19;
+    color: #000 ;
+    // background: #1A5B9C;
+    // border-left: 8px solid #050D19;
     align-items: center;
     justify-content: space-between;
     span{
@@ -567,8 +567,8 @@ ion-label {
             }
         
             .receipt_content{
-              background: #f7f5ff;
-            padding: 24px; 
+            //   background: #f7f5ff;
+            // padding: 24px; 
             h3 {
                 font-weight: 500;
                 text-align: left;
@@ -602,8 +602,8 @@ ion-label {
                   text-align: left;
                   font-size: 14px;
                   text-transform: capitalize;
-                  color: #C0C0C1;
-                  font-weight: 300;
+                  color: #000;
+                  font-weight: 600;
                   padding: 5px;
                   &:nth-child(2){
                     text-align: left;
@@ -614,8 +614,9 @@ ion-label {
                   }
                 }
                 td{
-                  text-align: right;
+                  text-align: left;
                  color: #222B41;
+                 padding-left: 10px;
                 }
               }
             }
