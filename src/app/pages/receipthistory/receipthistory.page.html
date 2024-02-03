@@ -41,7 +41,7 @@
     ></ion-searchbar>
   </div> -->
   <section class="payment" *ngIf="length != 0">
-    <p  *ngIf="show == true && showGrandTotal" class="total">
+    <p *ngIf="show == true" class="total">
       Total<span>
       ₹ {{indianRupeeFormat(grandtotal)}}</span>
     </p>

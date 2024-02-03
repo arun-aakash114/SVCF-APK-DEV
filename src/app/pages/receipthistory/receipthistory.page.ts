@@ -93,10 +93,10 @@ export class ReceipthistoryPage implements OnInit {
 					this.length = this.receipt_history.length
 					var num = 0;
 					for (let i = 0; i < this.receipt_history.length; i++) {
-						this.receipt_history[i].total = this.receipt_history[i].total.replace(/,/g, '');
-
-						num += (parseFloat(this.receipt_history[i].total))
-
+						if(this.receipt_history[i].isAccepted!='2'){
+							this.receipt_history[i].total = this.receipt_history[i].total.replace(/,/g, '');
+							num += (parseFloat(this.receipt_history[i].total))
+						}
 						this.history_total = num;
 						this.history_tot = Number(parseFloat(this.history_total).toFixed(2)).toLocaleString('en', {
 							minimumFractionDigits: 2
