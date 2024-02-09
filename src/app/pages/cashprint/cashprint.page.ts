@@ -30,9 +30,16 @@ constructor(private platform:Platform,private http: HttpClient,public loadingCon
     mobilenumber: ['',[Validators.required,Validators.maxLength(10)]]    
     })
 }
+// printReceipt() {
+//   // Open the print dialog
+//   const printableArea = this.my.nativeElement.innerHTML; 
+//   this.printer.print(printableArea, { name: 'Receipt', duplex: true });
+// }
+
+
 printReceipt() {
-  // Open the print dialog
-  const printableArea = this.my.nativeElement.innerHTML; // Use the correct reference to your HTML content
+  const printableArea = document.getElementById('print_receipt').innerHTML;
+
   this.printer.print(printableArea, { name: 'Receipt', duplex: true });
 }
 
